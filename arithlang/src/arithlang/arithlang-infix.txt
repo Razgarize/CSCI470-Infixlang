@@ -1,0 +1,31 @@
+Program ::= Exp
+
+Exp     ::= Exp + Term
+            | Exp - Term
+            | Term
+
+Term    ::= Term * Power
+            | Term Factor
+            | Term / Power
+            | Power
+
+Power   ::= Factor ** Power  // Left-associative exponentiation
+            | Factor
+
+Factor  ::= ( Exp )         // Parentheses
+            | - Factor      // Prefix negation
+            | Number        // Numbers
+
+Number  ::= Digit
+            | DigitNotZero Digit+
+            | '-' Digit+      //
+
+
+Float ::= Number.Digit+
+
+Dot ::= '.'
+
+Digit   ::= [0-9]
+
+DigitNotZero ::= [1-9]
+
