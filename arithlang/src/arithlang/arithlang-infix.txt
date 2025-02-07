@@ -21,7 +21,7 @@ Number  ::= Digit
             | '-' Digit+      //
 
 
-Float ::= Number.Digit+
+Float ::= Digit+ Dot Digit+
 
 Dot ::= '.'
 
