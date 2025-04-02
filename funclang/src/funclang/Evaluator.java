@@ -124,7 +124,7 @@ public class Evaluator implements Visitor<Value> {
 		Exp value_exp = e.value_exp();
 		Value value = (Value) value_exp.accept(this, env);
 		((GlobalEnv) initEnv).extend(name, value);
-		return new Value.UnitVal();		
+		return value;		
 	}	
 
 	@Override

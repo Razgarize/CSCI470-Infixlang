@@ -1,6 +1,6 @@
 grammar ArithLang;
 
- program returns [Program ast] :   
+program returns [Program ast] :   
 		e=exp { $ast = new Program($e.ast); }
 		;
 
