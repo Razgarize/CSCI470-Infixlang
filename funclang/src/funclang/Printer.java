@@ -35,8 +35,8 @@ public class Printer {
 		}
 		
 		public String visit(AST.BoolExp e, Env env) {
-			if(e.v()) return "#t";
-			return "#f";
+			if(e.v()) return "True";
+			return "False";
 		}
 
 		public String visit(AST.DivExp e, Env env) {
