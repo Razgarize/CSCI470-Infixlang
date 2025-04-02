@@ -1,4 +1,4 @@
-grammar FuncLang;
+grammar ArithLang;
 
  program returns [Program ast] :   
 		e=exp { $ast = new Program($e.ast); }
@@ -101,8 +101,6 @@ varexp returns [Exp ast] :
  WS  :  [ \t\r\n\u000C]+ -> skip;
  Comment :   '/*' .*? '*/' -> skip;
  Line_Comment :   '//' ~[\r\n]* -> skip;
- 
- fragment ESCQUOTE : '\\"';
- StrLiteral :   '"' ( ESCQUOTE | ~('\n'|'\r') )*? '"';
+
 
 
