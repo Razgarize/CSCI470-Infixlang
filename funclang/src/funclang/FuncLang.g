@@ -54,10 +54,10 @@ term returns [Exp ast]
                     $list.add($dr.ast);
                     $ast = new DivExp($list);
                  }
-    | ml = term '%' mr = factor {
+    | cl = term '%' cr = factor {
                     $list = new ArrayList<Exp>();
-                    $list.add($ml.ast);
-                    $list.add($mr.ast);
+                    $list.add($cl.ast);
+                    $list.add($cr.ast);
                     $ast = new ModExp($list);
                  }
     | f = factor { $ast = $f.ast; }
