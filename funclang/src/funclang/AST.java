@@ -579,6 +579,28 @@ public interface AST {
 			return visitor.visit(this, env);
 		}
 	}
+
+	public static class ModExp extends CompoundArithExp {
+		public ModExp(Exp fst) {
+			super(fst);
+		}
+
+		public ModExp(List<Exp> args) {
+			super(args);
+		}
+
+		public ModExp(Exp fst, List<Exp> rest) {
+			super(fst, rest);
+		}
+
+		public ModExp(Exp left, Exp right) {
+			super(left, right);
+		}
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
 	
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
@@ -589,6 +611,7 @@ public interface AST {
 		public T visit(AST.BoolExp e, Env env);
 		public T visit(AST.DivExp e, Env env);
 		public T visit(AST.MultExp e, Env env);
+		public T visit(AST.ModExp e, Env env); //Remainder division
 		public T visit(AST.Program p, Env env);
 		public T visit(AST.SubExp e, Env env);
 		public T visit(AST.VarExp e, Env env);
