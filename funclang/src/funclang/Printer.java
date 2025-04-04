@@ -98,6 +98,11 @@ public class Printer {
 			return result + ")";
 		}
 		
+		public String visit(AST.PrintExp e, Env env) {
+			String result = "(print ";
+			return result + ")";
+		}
+
 		public String visit(AST.DefineDecl d, Env env) {
 			String result = "(define ";
 			result += d.name() + " ";
@@ -176,6 +181,8 @@ public class Printer {
 				result += exp.accept(this, env) + " ";
 			return result + ")";
 		}
+
+
 
 		public String visit(AST.NullExp e, Env env) {
 			String result = "(null? ";

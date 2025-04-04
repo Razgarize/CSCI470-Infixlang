@@ -3,6 +3,12 @@ package funclang;
 import java.util.ArrayList;
 import java.util.List;
 
+import funclang.AST.ASTNode;
+import funclang.AST.BinaryComparator;
+import funclang.AST.CompoundArithExp;
+import funclang.AST.DefineDecl;
+import funclang.AST.Exp;
+
 
 /**
  * This class hierarchy represents expressions in the abstract syntax tree
@@ -407,6 +413,7 @@ public interface AST {
 			return visitor.visit(this, env);
 		}
 	}
+
 	
 	/**
 	 * A less expression has the syntax
@@ -603,17 +610,33 @@ public interface AST {
 		}
 	}
 
+	public class PrintExp extends Exp {
+		Exp exp;
+
+		public PrintExp(Exp exp) {
+			this.exp = exp;
+		}
+
+		public Exp exp() {
+			return exp;
+		}
+
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 	public static class WhileExp extends Exp {
 		private Exp _condition;
-		private Exp _body;
+		private List<Exp> _body;
 
-		public WhileExp(Exp condition, Exp body) {
+		public WhileExp(Exp condition, List<Exp> body) {
 			_condition = condition;
 			_body = body;
 		}
 
 		public Exp condition() { return _condition; }
-		public Exp body() { return _body; }
+		public List<Exp> body() { return _body; }
 
 		public <T> T accept(Visitor<T> visitor, Env env) {
 			return visitor.visit(this, env);
@@ -650,5 +673,6 @@ public interface AST {
 		public T visit(AST.ListExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.NullExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.WhileExp e, Env env); // New for Pyc
+		public T visit(AST.PrintExp e, Env env); // New for Pyc
 	}	
 }

@@ -7,7 +7,41 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 
+import funclang.AST.AddExp;
+import funclang.AST.BoolExp;
+import funclang.AST.CallExp;
+import funclang.AST.CarExp;
+import funclang.AST.CdrExp;
+import funclang.AST.ConsExp;
+import funclang.AST.DefineDecl;
+import funclang.AST.DivExp;
+import funclang.AST.EqualExp;
+import funclang.AST.EvalExp;
+import funclang.AST.Exp;
+import funclang.AST.GreaterExp;
+import funclang.AST.IfExp;
+import funclang.AST.LambdaExp;
+import funclang.AST.LessExp;
+import funclang.AST.LetExp;
+import funclang.AST.ListExp;
+import funclang.AST.ModExp;
+import funclang.AST.MultExp;
+import funclang.AST.NullExp;
+import funclang.AST.NumExp;
+import funclang.AST.Program;
+import funclang.AST.ReadExp;
+import funclang.AST.StrExp;
+import funclang.AST.SubExp;
+import funclang.AST.UnitExp;
+import funclang.AST.VarExp;
+import funclang.AST.Visitor;
 import funclang.Env.*;
+import funclang.Value.BoolVal;
+import funclang.Value.DynamicError;
+import funclang.Value.NumVal;
+import funclang.Value.PairVal;
+import funclang.Value.StringVal;
+import funclang.Value.UnitVal;
 
 public class Evaluator implements Visitor<Value> {
 	
@@ -130,6 +164,25 @@ public class Evaluator implements Visitor<Value> {
 		return (Value) e.body().accept(this, new_env);		
 	}	
 	
+    @Override
+    public Value visit(AST.PrintExp e, Env env) {
+        Value exp = e.exp().accept(this, env);
+		if (exp instanceof Value.StringVal) {
+			System.out.println(((Value.StringVal) exp).v());
+		} else if (exp instanceof Value.NumVal) {
+			System.out.println(((Value.NumVal) exp).v());
+		} else if (exp instanceof Value.BoolVal) {
+			System.out.println(((Value.BoolVal) exp).v());
+		} else if (exp instanceof Value.PairVal) {
+			System.out.println(((Value.PairVal) exp).tostring());
+		} else if (exp instanceof Value.UnitVal) {
+			System.out.println("Unit");
+		} else {
+			System.out.println("Unknown value type");
+		}
+        return exp;
+    }
+
 	@Override
 	public Value visit(DefineDecl e, Env env) { // New for definelang.
 		String name = e.name();
@@ -274,7 +327,9 @@ public class Evaluator implements Visitor<Value> {
 	        if (!((Value.BoolVal) conditionValue).v()) {
 	            break;
 	        }
-	        e.body().accept(this, env);
+	        for (Exp stmt : e.body()) { // Iterate over the list of expressions
+	            stmt.accept(this, env);
+	        }
 	    }
 	    return new Value.UnitVal(); // Return a unit value after the loop ends
 	}
