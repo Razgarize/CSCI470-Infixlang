@@ -7,10 +7,12 @@ import funclang.AST.Exp;
 public class Printer {
 	public void print(Value v) {
 		if(v.tostring() != "")
-			System.out.println(v.tostring());
+			//System.out.println(v.tostring());
+			return;
 	}
 	public void print(Exception e) {
-		System.out.println(e.toString());
+		//System.out.println(e.toString());
+		return;
 	}
 	
 	public static class Formatter implements AST.Visitor<String> {
