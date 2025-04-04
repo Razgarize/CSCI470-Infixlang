@@ -45,7 +45,7 @@ import funclang.Value.UnitVal;
 
 public class Evaluator implements Visitor<Value> {
 	
-	Printer.Formatter ts = new Printer.Formatter();
+	/*Printer.Formatter ts = new Printer.Formatter();*/
 
 	Env initEnv = initialEnv(); //New for definelang
 	
@@ -118,17 +118,24 @@ public class Evaluator implements Visitor<Value> {
 		}
 		return new NumVal(result);
 	}
+@Override
+public Value visit(Program p, Env env) {
+    try {
+        // Process all declarations
+        for (DefineDecl d : p.decls()) {
+            d.accept(this, initEnv);
+        }
 
-	@Override
-	public Value visit(Program p, Env env) {
-		try {
-			for(DefineDecl d: p.decls())
-				d.accept(this, initEnv);
-			return (Value) p.e().accept(this, initEnv);
-		} catch (ClassCastException e) {
-			return new DynamicError(e.getMessage());
-		}
-	}
+        // Evaluate each expression in the program
+        Value result = new UnitVal(); // Default to UnitVal
+        for (Exp d : p.e()) { // Assuming `expressions()` returns a list of expressions
+            result = d.accept(this, initEnv);
+        }
+        return result; // Return the result of the last expression
+    } catch (ClassCastException e) {
+        return new DynamicError(e.getMessage());
+    }
+}
 
 	@Override
 	public Value visit(SubExp e, Env env) {
@@ -205,7 +212,7 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(CallExp e, Env env) { // New for funclang.
 		Object result = e.operator().accept(this, env);
 		if(!(result instanceof Value.FunVal))
-			return new Value.DynamicError("Operator not a function in call " +  ts.visit(e, env));
+			return new Value.DynamicError("Operator not a function in call " /*+  ts.visit(e, env)*/);
 		Value.FunVal operator =  (Value.FunVal) result; //Dynamic checking
 		List<Exp> operands = e.operands();
 
@@ -216,7 +223,7 @@ public class Evaluator implements Visitor<Value> {
 		
 		List<String> formals = operator.formals();
  		if (formals.size()!=actuals.size())
-			return new Value.DynamicError("Argument mismatch in call " + ts.visit(e, env));
+			return new Value.DynamicError("Argument mismatch in call " /* + ts.visit(e, env) */);
 
 		Env fun_env = operator.env();
 		for (int index = 0; index < formals.size(); index++)
@@ -229,7 +236,7 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(IfExp e, Env env) { // New for funclang.
 		Object result = e.conditional().accept(this, env);
 		if(!(result instanceof Value.BoolVal))
-			return new Value.DynamicError("Condition not a boolean in expression " +  ts.visit(e, env));
+			return new Value.DynamicError("Condition not a boolean in expression " /* + ts.visit(e, env) */);
 		Value.BoolVal condition =  (Value.BoolVal) result; //Dynamic checking
 		
 		if(condition.v())

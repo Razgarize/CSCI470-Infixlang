@@ -2,10 +2,9 @@ grammar FuncLang;
 
 // Program structure
 program returns [Program ast]
-    locals [ArrayList<DefineDecl> defs, Exp expr]
-    @init { $defs = new ArrayList<DefineDecl>(); $expr = new UnitExp(); } :
-    (def=definedecl { $defs.add($def.ast); })*
-    (e=statement { $expr = $e.ast; })?
+    locals [ArrayList<DefineDecl> defs, ArrayList<Exp> expr]
+    @init { $defs = new ArrayList<DefineDecl>(); $expr = new ArrayList<Exp>(); } :
+    ((def=definedecl { $defs.add($def.ast); }) | (e=statement { $expr.add($e.ast); }))*
     { $ast = new Program($defs, $expr); }
     ;
 
@@ -203,6 +202,5 @@ WS : [ \t\r\n\u000C]+ -> skip;
 Comment : '/*' ( ((Letter) (NL)? | (LetterOrDigit) (NL)? | (Number) (NL)?)* )? '*/' -> skip;
 Line_Comment : '//' ~[\r\n]* -> skip;
 NL : [\n] -> skip;
-
 fragment ESCQUOTE : '\\"';
 StrLiteral : '"' (ESCQUOTE | ~('\n' | '\r'))*? '"';

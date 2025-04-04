@@ -23,14 +23,14 @@ public interface AST {
 	}
 	public static class Program extends ASTNode {
 		List<DefineDecl> _decls;
-		Exp _e;
+		List<Exp> _e;
 
-		public Program(List<DefineDecl>decls, Exp e) {
+		public Program(List<DefineDecl>decls, List<Exp> e) {
 			_decls = decls;
 			_e = e;
 		}
 
-		public Exp e() {
+		public List<Exp> e() {
 			return _e;
 		}
 		
