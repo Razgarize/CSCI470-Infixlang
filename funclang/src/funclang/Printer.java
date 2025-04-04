@@ -60,6 +60,13 @@ public class Printer {
 				result += exp.accept(this, env) + " ";
 			return result + ")";
 		}
+
+		public String visit(AST.ModExp e, Env env) {
+			String result = "(% ";
+			for(AST.Exp exp : e.all()) 
+				result += exp.accept(this, env) + " ";
+			return result + ")";
+		}
 		
 		public String visit(AST.Program p, Env env) {
 			return "" + p.e().accept(this, env);
