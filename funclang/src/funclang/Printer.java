@@ -182,6 +182,11 @@ public class Printer {
 			result += e.arg().accept(this, env);
 			return result + ")";
 		}
+
+		
+		public String visit(AST.WhileExp e, Env env) {
+			return "(while " + e.condition().accept(this, env) + " " + e.body().accept(this, env) + ")";
+		}
 		
 	}
 }

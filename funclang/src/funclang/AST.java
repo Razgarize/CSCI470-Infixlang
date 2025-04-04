@@ -603,6 +603,23 @@ public interface AST {
 		}
 	}
 
+	public static class WhileExp extends Exp {
+		private Exp _condition;
+		private Exp _body;
+
+		public WhileExp(Exp condition, Exp body) {
+			_condition = condition;
+			_body = body;
+		}
+
+		public Exp condition() { return _condition; }
+		public Exp body() { return _body; }
+
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 	
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
@@ -632,5 +649,6 @@ public interface AST {
 		public T visit(AST.ConsExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.ListExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.NullExp e, Env env); // Additional expressions for convenience
+		public T visit(AST.WhileExp e, Env env); // New for Pyc
 	}	
 }

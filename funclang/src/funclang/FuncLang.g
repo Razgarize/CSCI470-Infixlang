@@ -21,8 +21,15 @@ exp returns [Exp ast]:
     | com=comexp { $ast = $com.ast; }
     | comp=compexp { $ast = $comp.ast; }
     | id = Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); }
+    | wl=whileexp { $ast = $wl.ast; }
     |  a = arithexp { $ast = $a.ast; }
 	;
+
+
+whileexp returns [WhileExp ast]
+    : While '('  condition=exp ')' '{' body=exp '}'
+      { $ast = new WhileExp($condition.ast, $body.ast); }
+    ;
 
 arithexp returns [Exp ast]
     locals [ArrayList<Exp> list]:
@@ -89,6 +96,7 @@ comexp returns [Exp ast] :
 num_or_str returns [Exp ast]: 
     num=numexp { $ast = $num.ast; }
     | str=strexp { $ast = $str.ast; }
+    | v = varexp { $ast = new VarExp($v.text); }
     ;
 
 
@@ -136,6 +144,7 @@ Equal : '=' ;
 Greater : '>' ;
 TrueLiteral : 'True' ;
 FalseLiteral : 'False' ;
+While : 'while' ;
 
 Number : DIGIT+ ;
 

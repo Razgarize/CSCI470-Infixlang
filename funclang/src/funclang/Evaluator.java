@@ -264,6 +264,21 @@ public class Evaluator implements Visitor<Value> {
 		}
 	}
 
+	
+	public Value visit(AST.WhileExp e, Env env) {
+	    while (true) {
+	        Value conditionValue = e.condition().accept(this, env);
+	        if (!(conditionValue instanceof Value.BoolVal)) {
+	            return new Value.DynamicError("Condition must evaluate to a boolean.");
+	        }
+	        if (!((Value.BoolVal) conditionValue).v()) {
+	            break;
+	        }
+	        e.body().accept(this, env);
+	    }
+	    return new Value.UnitVal(); // Return a unit value after the loop ends
+	}
+
 	private Env initialEnv() {
 		GlobalEnv initEnv = new GlobalEnv();
 		
