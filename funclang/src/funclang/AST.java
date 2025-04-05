@@ -457,6 +457,26 @@ public interface AST {
 		}
 	}
 
+	public static class GreaterEqualExp extends BinaryComparator {
+		public GreaterEqualExp(Exp first_exp, Exp second_exp) {
+			super(first_exp, second_exp);
+		}
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class LessEqualExp extends BinaryComparator {
+		public LessEqualExp(Exp first_exp, Exp second_exp) {
+			super(first_exp, second_exp);
+		}
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 
 	/**
 	 * An equal expression has the syntax
@@ -731,6 +751,8 @@ public interface AST {
 		public T visit(AST.LessExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.EqualExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.NotEqualExp e, Env env); // Corrected type for 'env'
+		public T visit(AST.GreaterEqualExp e, Env env); // Additional expressions for convenience
+		public T visit(AST.LessEqualExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.GreaterExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.CarExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.CdrExp e, Env env); // Additional expressions for convenience

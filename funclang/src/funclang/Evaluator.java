@@ -272,6 +272,22 @@ public Value visit(Program p, Env env) {
 	}
 
 	@Override
+	public Value visit(GreaterEqualExp e, Env env) { // New for funclang.
+		Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env);
+		Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env);
+		return new Value.BoolVal(first.v() >= second.v());
+	}
+
+	
+	@Override
+	public Value visit(LessEqualExp e, Env env) { // New for funclang.
+		Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env);
+		Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env);
+		return new Value.BoolVal(first.v() <= second.v());
+	}
+
+
+	@Override
 	public Value visit(GreaterExp e, Env env) { // New for funclang.
 		Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env);
 		Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env);

@@ -23,13 +23,13 @@ statement returns [Exp ast] :
     e=exp { $ast = $e.ast; }
     | wl=whileexp { $ast = $wl.ast; }
     | com=comexp { $ast = $com.ast; }
-    | ife=ifexp { $ast = $ife.ast; }
     ;
 
 // Expressions
 exp returns [Exp ast] :
     va=varexp { $ast = $va.ast; }
     | bl=boolexp { $ast = $bl.ast; }
+    | ife=ifexp { $ast = $ife.ast; }
     | val=num_or_str { $ast = $val.ast; }
     | comp=compexp { $ast = $comp.ast; }
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
@@ -58,13 +58,13 @@ whileexp returns [Exp ast]
     { $ast = new WhileExp($condition.ast, $bodies); }
     ;
 
-ifexp returns [Exp ast]
+ifexp returns [IfExp ast]
     locals [ArrayList<Exp> thenBodies, ArrayList<Exp> elseBodies]
     @init { $thenBodies = new ArrayList<Exp>(); $elseBodies = new ArrayList<Exp>(); } :
-    'if''(' condition=exp ')' '{'
+    If '(' condition=exp ')' '{'
     (thenBody=exp { $thenBodies.add($thenBody.ast); })*
     '}'
-    ('else' '{'
+    (Else '{'
     (elseBody=exp { $elseBodies.add($elseBody.ast); })*
     '}')?
     { $ast = new IfExp($condition.ast, $thenBodies, $elseBodies); }
@@ -126,11 +126,12 @@ exponent returns [Exp ast] :
 
 // Comparison expressions
 compexp returns [Exp ast] :
-    e1=compexp '==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
-    | e1=compexp '>' e2=num_or_str { $ast = new GreaterExp($e1.ast, $e2.ast); }
-    | e1=compexp '<' e2=num_or_str { $ast = new LessExp($e1.ast, $e2.ast); }
-    | e1=compexp '!=' e2=num_or_str { $ast = new NotEqualExp($e1.ast, $e2.ast); }
-    | t=num_or_str { $ast = $t.ast; }
+    e1=num_or_str ('==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
+                  | '>' e2=num_or_str { $ast = new GreaterExp($e1.ast, $e2.ast); }
+                  | '<' e2=num_or_str { $ast = new LessExp($e1.ast, $e2.ast); }
+                  | '!=' e2=num_or_str { $ast = new NotEqualExp($e1.ast, $e2.ast); }
+                  | '<=' e2=num_or_str { $ast = new LessEqualExp($e1.ast, $e2.ast); }
+                  | '>=' e2=num_or_str { $ast = new GreaterEqualExp($e1.ast, $e2.ast); })?
     ;
 
 // Comments
@@ -186,7 +187,8 @@ Define : 'def';
 Let : 'let';
 Dot : '.';
 Lambda : 'lambda';
-
+If : 'if';
+Else : 'else';
 Car : 'car';
 Cdr : 'cdr';
 Cons : 'cons';
