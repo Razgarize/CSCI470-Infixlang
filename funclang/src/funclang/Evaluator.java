@@ -197,10 +197,16 @@ public Value visit(Program p, Env env) {
         for (Exp exp : exps) {
             Value value = exp.accept(this, env);
             if (value instanceof Value.StringVal) {
-                // Remove quotes from the string value
-                output.append(((Value.StringVal) value).v().replace("\"", ""));
+                output.append(((Value.StringVal) value).v());
             } else if (value instanceof Value.NumVal) {
-                output.append(((Value.NumVal) value).v());
+                double num = ((Value.NumVal) value).v();
+                // Check if the number is an integer by casting to int
+				// and comparing with the original number
+                if (num == (int) num) {
+                    output.append((int) num); // Print as an integer
+                } else {
+                    output.append(num); // Print as a double
+                }
             } else if (value instanceof Value.BoolVal) {
                 output.append(((Value.BoolVal) value).v());
             } else if (value instanceof Value.PairVal) {
