@@ -23,6 +23,7 @@ statement returns [Exp ast] :
     e=exp { $ast = $e.ast; }
     | wl=whileexp { $ast = $wl.ast; }
     | com=comexp { $ast = $com.ast; }
+    | ife=ifexp { $ast = $ife.ast; }
     ;
 
 // Expressions
@@ -57,7 +58,17 @@ whileexp returns [Exp ast]
     { $ast = new WhileExp($condition.ast, $bodies); }
     ;
 
-
+ifexp returns [Exp ast]
+    locals [ArrayList<Exp> thenBodies, ArrayList<Exp> elseBodies]
+    @init { $thenBodies = new ArrayList<Exp>(); $elseBodies = new ArrayList<Exp>(); } :
+    'if''(' condition=exp ')' '{'
+    (thenBody=exp { $thenBodies.add($thenBody.ast); })*
+    '}'
+    ('else' '{'
+    (elseBody=exp { $elseBodies.add($elseBody.ast); })*
+    '}')?
+    { $ast = new IfExp($condition.ast, $thenBodies, $elseBodies); }
+    ;
 
 // Arithmetic expressions
 arithexp returns [Exp ast]
@@ -175,7 +186,7 @@ Define : 'def';
 Let : 'let';
 Dot : '.';
 Lambda : 'lambda';
-If : 'if';
+
 Car : 'car';
 Cdr : 'cdr';
 Cons : 'cons';
@@ -188,6 +199,8 @@ TrueLiteral : 'True';
 FalseLiteral : 'False';
 While : 'while';
 Print : 'print';
+
+
 
 Number : DIGIT+;
 Identifier : Letter LetterOrDigit*;

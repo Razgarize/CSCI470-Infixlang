@@ -399,18 +399,18 @@ public interface AST {
 	 */
 	public static class IfExp extends Exp {
 		Exp _conditional; 
-		Exp _then_exp; 
-		Exp _else_exp; 
+		List<Exp> _then_exp; 
+		List<Exp> _else_exp; 
 		
-		public IfExp(Exp conditional, Exp then_exp, Exp else_exp) {
+		public IfExp(Exp conditional, List<Exp> then_exp, List<Exp> else_exp) {
 			_conditional = conditional;
 			_then_exp = then_exp; 
 			_else_exp = else_exp; 
 		}
 		
 		public Exp conditional() { return _conditional; }
-		public Exp then_exp() { return _then_exp; }
-		public Exp else_exp() { return _else_exp; }
+		public List<Exp> then_exp() { return _then_exp; }
+		public List<Exp> else_exp() { return _else_exp; }
 		
 		public <T> T accept(Visitor<T> visitor, Env env) {
 			return visitor.visit(this, env);
@@ -673,6 +673,40 @@ public interface AST {
 		}
 	}
 
+	// public static class AndExp extends Exp {
+	// 	private Exp _left;
+	// 	private Exp _right;
+	
+	// 	public AndExp(Exp left, Exp right) {
+	// 		_left = left;
+	// 		_right = right;
+	// 	}
+	
+	// 	public Exp left() { return _left; }
+	// 	public Exp right() { return _right; }
+	
+	// 	public <T> T accept(Visitor<T> visitor, Env env) {
+	// 		return visitor.visit(this, env);
+	// 	}
+	// }
+
+	// public static class OrExp extends Exp {
+	// 	private Exp _left;
+	// 	private Exp _right;
+	
+	// 	public OrExp(Exp left, Exp right) {
+	// 		_left = left;
+	// 		_right = right;
+	// 	}
+	
+	// 	public Exp left() { return _left; }
+	// 	public Exp right() { return _right; }
+	
+	// 	public <T> T accept(Visitor<T> visitor, Env env) {
+	// 		return visitor.visit(this, env);
+	// 	}
+	// }
+
 	
 	public interface Visitor <T> {
 		// This interface should contain a signature for each concrete AST node.
@@ -705,6 +739,8 @@ public interface AST {
 		public T visit(AST.NullExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.WhileExp e, Env env); // New for Pyc
 		public T visit(AST.PrintExp e, Env env); // New for Pyc
+		// public T visit(AST.AndExp e, Env env); // New for Pyc
+    	// public T visit(AST.OrExp e, Env env); // New for Pyc
 		// public T visit(AST.UserInputExp e, Env env); // New for Pyc
 	}	
 }

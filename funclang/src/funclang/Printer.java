@@ -131,6 +131,19 @@ public class Printer {
 		public String visit(AST.WhileExp e, Env env) {
 			return "";
 		}
+		public String visit(AST.NotEqualExp e, Env env) {
+			return "";
+		}
+
+		// public String visit(AST.OrExp e, Env env) {
+		// 	return "";
+		// }
+		// public String visit(AST.AndExp e, Env env) {
+		// 	return "";
+		// }
+		// public String visit(AST.NotExp e, Env env) {
+		// 	return "";
+		// }
 		
 	}
 }

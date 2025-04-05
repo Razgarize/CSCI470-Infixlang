@@ -27,6 +27,7 @@ import funclang.AST.LetExp;
 import funclang.AST.ListExp;
 import funclang.AST.ModExp;
 import funclang.AST.MultExp;
+import funclang.AST.NotEqualExp;
 import funclang.AST.NullExp;
 import funclang.AST.NumExp;
 import funclang.AST.Program;
@@ -247,17 +248,7 @@ public Value visit(Program p, Env env) {
 		return (Value) operator.body().accept(this, fun_env);
 	}
 		
-	@Override
-	public Value visit(IfExp e, Env env) { // New for funclang.
-		Object result = e.conditional().accept(this, env);
-		if(!(result instanceof Value.BoolVal))
-			return new Value.DynamicError("Condition not a boolean in expression " /* + ts.visit(e, env) */);
-		Value.BoolVal condition =  (Value.BoolVal) result; //Dynamic checking
-		
-		if(condition.v())
-			return (Value) e.then_exp().accept(this, env);
-		else return (Value) e.else_exp().accept(this, env);
-	}
+
 
 	@Override
 	public Value visit(LessExp e, Env env) { // New for funclang.
@@ -305,6 +296,36 @@ public Value visit(Program p, Env env) {
 		Value second = (Value) e.snd().accept(this, env);
 		return new Value.PairVal(first, second);
 	}
+// 	@Override
+// 	public Value visit(AST.AndExp e, Env env) {
+// 		Value left = e.left().accept(this, env);
+// 		if (left instanceof BoolVal && !((BoolVal) left).v()) {
+// 			// Short-circuit: if left is false, return false
+// 			return new BoolVal(false);
+// 		}
+// 		// Otherwise, evaluate the right operand
+// 		Value right = e.right().accept(this, env);
+// 		if (right instanceof BoolVal) {
+// 			return new BoolVal(((BoolVal) right).v());
+// 		}
+// 		throw new EvalException("AndExp requires boolean operands");
+// 	}
+
+// 	@Override
+// 	public Value visit(AST.OrExp e, Env env) {
+//     Value left = e.left().accept(this, env);
+//     if (left instanceof BoolVal && ((BoolVal) left).v()) {
+//         // Short-circuit: if left is true, return true
+//         return new BoolVal(true);
+//     }
+//     // Otherwise, evaluate the right operand
+//     Value right = e.right().accept(this, env);
+//     if (right instanceof BoolVal) {
+//         return new BoolVal(((BoolVal) right).v());
+//     }
+//     throw new EvalException("OrExp requires boolean operands");
+// }
+
 
 	@Override
 	public Value visit(ListExp e, Env env) { // New for funclang.
@@ -329,6 +350,7 @@ public Value visit(Program p, Env env) {
 		Value val = (Value) e.arg().accept(this, env);
 		return new BoolVal(val instanceof Value.Null);
 	}
+	
 
 	public Value visit(EvalExp e, Env env) {
 		StringVal programText = (StringVal) e.code().accept(this, env);
@@ -351,7 +373,7 @@ public Value visit(Program p, Env env) {
 	    while (true) {
 	        Value conditionValue = e.condition().accept(this, env);
 	        if (!(conditionValue instanceof Value.BoolVal)) {
-	            return new Value.DynamicError("Condition must evaluate to a boolean.");
+	            return new Value.DynamicError("Condition must evaluate to a boolean for While Loop.");
 	        }
 	        if (!((Value.BoolVal) conditionValue).v()) {
 	            break;
@@ -362,6 +384,23 @@ public Value visit(Program p, Env env) {
 	    }
 	    return new Value.UnitVal(); // Return a unit value after the loop ends
 	}
+
+	@Override
+	public Value visit(IfExp e, Env env) { // New for funclang.
+    Object result = e.conditional().accept(this, env);
+    if (!(result instanceof Value.BoolVal)) {
+        return new Value.DynamicError("Condition not a boolean in expression");
+    }
+    Value.BoolVal condition = (Value.BoolVal) result; // Dynamic checking
+
+    List<Exp> bodyToExecute = condition.v() ? e.then_exp() : e.else_exp(); // Choose the correct body
+
+    Value lastValue = new Value.UnitVal(); // Default to UnitVal
+    for (Exp stmt : bodyToExecute) { // Iterate over the list of expressions
+        lastValue = stmt.accept(this, env); // Evaluate each expression
+    }
+    return lastValue; // Return the result of the last expression
+}
 
 	private Env initialEnv() {
 		GlobalEnv initEnv = new GlobalEnv();
