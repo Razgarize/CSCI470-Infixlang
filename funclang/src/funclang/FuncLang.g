@@ -51,7 +51,7 @@ printexp returns [PrintExp ast]
     ;
 
 // While expression
-whileexp returns [Exp ast]
+whileexp returns [WhileExp ast]
     locals [ArrayList<Exp> bodies]
     @init { $bodies = new ArrayList<Exp>(); } :
     While '(' condition=exp ')' '{'

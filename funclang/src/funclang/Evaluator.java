@@ -197,7 +197,7 @@ public Value visit(Program p, Env env) {
         for (Exp exp : exps) {
             Value value = exp.accept(this, env);
             if (value instanceof Value.StringVal) {
-                output.append(((Value.StringVal) value).v());
+                output.append(((Value.StringVal) value).v().replace("\"", ""));
             } else if (value instanceof Value.NumVal) {
                 double num = ((Value.NumVal) value).v();
                 // Check if the number is an integer by casting to int
