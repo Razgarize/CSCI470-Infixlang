@@ -3,6 +3,7 @@ import static funclang.AST.*;
 import static funclang.Value.*;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
@@ -170,6 +171,20 @@ public Value visit(Program p, Env env) {
 
 		return (Value) e.body().accept(this, new_env);		
 	}	
+
+	// @Override
+    // public Value visit(UserInputExp e, Env env) {
+    //     // Evaluate the prompt expression
+    //     Value promptValue = e.prompt().accept(this, env);
+    //     System.out.print(promptValue + ": "); // Display the prompt
+
+    //     // Read user input
+    //     Scanner scanner = new Scanner(System.in);
+    //     String userInput = scanner.nextLine();
+
+    //     // Return the user input as a string
+    //     return new StringVal(userInput);
+    // }
 	
     @Override
     public Value visit(AST.PrintExp e, Env env) {
@@ -256,6 +271,13 @@ public Value visit(Program p, Env env) {
 		Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env);
 		Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env);
 		return new Value.BoolVal(first.v() == second.v());
+	}
+
+	@Override
+	public Value visit(NotEqualExp e, Env env) { // New for funclang.
+		Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env);
+		Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env);
+		return new Value.BoolVal(first.v() != second.v());
 	}
 
 	@Override

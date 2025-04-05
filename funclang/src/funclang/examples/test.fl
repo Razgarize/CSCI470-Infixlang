@@ -2,6 +2,7 @@ x=2
 print(x) 
 print("Start Loop") 
 while(x<5){ 
+print("x: ")
 print(x) 
 x=x+1 
 } 

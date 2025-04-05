@@ -8,6 +8,7 @@ import funclang.AST.BinaryComparator;
 import funclang.AST.CompoundArithExp;
 import funclang.AST.DefineDecl;
 import funclang.AST.Exp;
+import java.util.Scanner;
 
 
 /**
@@ -120,6 +121,7 @@ public interface AST {
 		}
 	}
 
+
 	public static abstract class CompoundArithExp extends Exp {
 		List<Exp> _rest;
 
@@ -132,6 +134,7 @@ public interface AST {
 			_rest.add(fst);
 		}
 
+		
 		public CompoundArithExp(List<Exp> args) {
 			_rest = new ArrayList<Exp>();
 			for (Exp e : args)
@@ -444,6 +447,17 @@ public interface AST {
 		public Exp second_exp() { return _second_exp; }
 	}
 
+	public static class NotEqualExp extends BinaryComparator {
+		public NotEqualExp(Exp first_exp, Exp second_exp) {
+			super(first_exp, second_exp);
+		}
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+
 	/**
 	 * An equal expression has the syntax
 	 * 
@@ -518,6 +532,22 @@ public interface AST {
 		}
 	}
 	
+	// public static class UserInputExp extends Exp {
+	// 	private final Exp prompt;
+
+	// 	public UserInputExp(Exp prompt) {
+	// 		this.prompt = prompt;
+	// 	}
+
+	// 	public Exp prompt() {
+	// 		return prompt;
+	// 	}
+
+	// 	public <T> T accept(Visitor<T> visitor, Env env) {
+	// 		return visitor.visit(this, env);
+	// 	}
+	// }
+
 	/**
 	 * A cons expression has the syntax
 	 * 
@@ -666,6 +696,7 @@ public interface AST {
 		public T visit(AST.IfExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.LessExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.EqualExp e, Env env); // Additional expressions for convenience
+		public T visit(AST.NotEqualExp e, Env env); // Corrected type for 'env'
 		public T visit(AST.GreaterExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.CarExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.CdrExp e, Env env); // Additional expressions for convenience
@@ -674,5 +705,6 @@ public interface AST {
 		public T visit(AST.NullExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.WhileExp e, Env env); // New for Pyc
 		public T visit(AST.PrintExp e, Env env); // New for Pyc
+		// public T visit(AST.UserInputExp e, Env env); // New for Pyc
 	}	
 }

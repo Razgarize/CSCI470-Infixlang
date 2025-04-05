@@ -31,10 +31,15 @@ exp returns [Exp ast] :
     | bl=boolexp { $ast = $bl.ast; }
     | val=num_or_str { $ast = $val.ast; }
     | comp=compexp { $ast = $comp.ast; }
-    | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); }
+    | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
     | pr=printexp { $ast = $pr.ast; }
     | a=arithexp { $ast = $a.ast; }
-    ;
+    ; //| id=Identifier '=' 'input' '(' e=userinput ')' { $ast = new DefineDecl($id.text, $e.ast); }
+
+// userinput returns [Exp ast] :
+//     e=exp
+//     { $ast = new UserInputExp($e.ast); }
+//     ;
 
 // Print expression
 printexp returns [PrintExp ast] :
@@ -113,6 +118,7 @@ compexp returns [Exp ast] :
     e1=compexp '==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
     | e1=compexp '>' e2=num_or_str { $ast = new GreaterExp($e1.ast, $e2.ast); }
     | e1=compexp '<' e2=num_or_str { $ast = new LessExp($e1.ast, $e2.ast); }
+    | e1=compexp '!=' e2=num_or_str { $ast = new NotEqualExp($e1.ast, $e2.ast); }
     | t=num_or_str { $ast = $t.ast; }
     ;
 
