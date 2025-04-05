@@ -21,19 +21,19 @@ definedecl returns [DefineDecl ast] :
 
 statement returns [Exp ast] :
     e=exp { $ast = $e.ast; }
-    | wl=whileexp { $ast = $wl.ast; }
-    | com=comexp { $ast = $com.ast; }
     ;
 
 // Expressions
 exp returns [Exp ast] :
     va=varexp { $ast = $va.ast; }
-    | bl=boolexp { $ast = $bl.ast; }
+    | wl=whileexp { $ast = $wl.ast; }
+    | com=comexp { $ast = $com.ast; }
+    | pr=printexp { $ast = $pr.ast; }
     | ife=ifexp { $ast = $ife.ast; }
+    | bl=boolexp { $ast = $bl.ast; }
     | val=num_or_str { $ast = $val.ast; }
     | comp=compexp { $ast = $comp.ast; }
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
-    | pr=printexp { $ast = $pr.ast; }
     | a=arithexp { $ast = $a.ast; }
     ; //| id=Identifier '=' 'input' '(' e=userinput ')' { $ast = new DefineDecl($id.text, $e.ast); }
 

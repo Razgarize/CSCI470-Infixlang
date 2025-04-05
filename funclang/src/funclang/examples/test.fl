@@ -1,6 +1,12 @@
 x=0
+y=1
 while(x<10){
-	if((x%2)==0){
+	while(y<5)
+	{
+		y=y+1
+		print("y = ", y)
+	}
+	if( 0==0 ){
 		print("x is even")
 	}
 	print("x =", x)
