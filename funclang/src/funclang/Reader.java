@@ -41,7 +41,7 @@ public class Reader {
 	
 	private String readNextProgram() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("$ ");
+		System.out.print("");
 		String programText = br.readLine();
 		return runFile(programText);
 	}

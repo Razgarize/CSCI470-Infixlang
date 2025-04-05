@@ -1,9 +1,8 @@
-x=6
+x=0
 while(x<10){
-	x=x+1
 	if((x%2)==0){
 		print("x is even")
 	}
-	print("x = ")
-	print(x)
+	print("x =", x)
+	x=x+1
 }
