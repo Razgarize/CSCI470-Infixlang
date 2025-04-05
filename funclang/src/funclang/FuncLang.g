@@ -43,9 +43,11 @@ exp returns [Exp ast] :
 //     ;
 
 // Print expression
-printexp returns [PrintExp ast] :
-    Print '(' e=exp ')'
-    { $ast = new PrintExp($e.ast); }
+printexp returns [PrintExp ast]
+    locals [ArrayList<Exp> exps = new ArrayList<Exp>();] :
+    Print '(' e=exp { $exps.add($e.ast); }
+    (',' e=exp { $exps.add($e.ast); })* ')'
+    { $ast = new PrintExp($exps); }
     ;
 
 // While expression

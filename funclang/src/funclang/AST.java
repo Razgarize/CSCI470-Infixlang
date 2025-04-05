@@ -660,15 +660,15 @@ public interface AST {
 		}
 	}
 
-	public class PrintExp extends Exp {
-		Exp exp;
+	public static class PrintExp extends Exp {
+		private List<Exp> exps;
 
-		public PrintExp(Exp exp) {
-			this.exp = exp;
+		public PrintExp(List<Exp> exps) {
+			this.exps = exps;
 		}
 
-		public Exp exp() {
-			return exp;
+		public List<Exp> exps() {
+			return exps;
 		}
 
 		public <T> T accept(Visitor<T> visitor, Env env) {

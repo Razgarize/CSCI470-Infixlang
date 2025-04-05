@@ -19,9 +19,11 @@ import funclang.AST.DivExp;
 import funclang.AST.EqualExp;
 import funclang.AST.EvalExp;
 import funclang.AST.Exp;
+import funclang.AST.GreaterEqualExp;
 import funclang.AST.GreaterExp;
 import funclang.AST.IfExp;
 import funclang.AST.LambdaExp;
+import funclang.AST.LessEqualExp;
 import funclang.AST.LessExp;
 import funclang.AST.LetExp;
 import funclang.AST.ListExp;
@@ -189,21 +191,30 @@ public Value visit(Program p, Env env) {
 	
     @Override
     public Value visit(AST.PrintExp e, Env env) {
-        Value exp = e.exp().accept(this, env);
-		if (exp instanceof Value.StringVal) {
-			System.out.println(((Value.StringVal) exp).v());
-		} else if (exp instanceof Value.NumVal) {
-			System.out.println(((Value.NumVal) exp).v());
-		} else if (exp instanceof Value.BoolVal) {
-			System.out.println(((Value.BoolVal) exp).v());
-		} else if (exp instanceof Value.PairVal) {
-			System.out.println(((Value.PairVal) exp).tostring());
-		} else if (exp instanceof Value.UnitVal) {
-			System.out.println("Unit");
-		} else {
-			System.out.println("Unknown value type");
-		}
-        return exp;
+        List<Exp> exps = e.exps();
+        StringBuilder output = new StringBuilder();
+
+        for (Exp exp : exps) {
+            Value value = exp.accept(this, env);
+            if (value instanceof Value.StringVal) {
+                // Remove quotes from the string value
+                output.append(((Value.StringVal) value).v().replace("\"", ""));
+            } else if (value instanceof Value.NumVal) {
+                output.append(((Value.NumVal) value).v());
+            } else if (value instanceof Value.BoolVal) {
+                output.append(((Value.BoolVal) value).v());
+            } else if (value instanceof Value.PairVal) {
+                output.append(((Value.PairVal) value).tostring());
+            } else if (value instanceof Value.UnitVal) {
+                output.append("Unit");
+            } else {
+                output.append("Unknown value type");
+            }
+            output.append(" "); // Add a space between items
+        }
+
+        System.out.println(output.toString().trim()); // Print the concatenated output
+        return new Value.UnitVal(); // Return UnitVal
     }
 
 	@Override
