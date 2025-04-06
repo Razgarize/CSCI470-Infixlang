@@ -62,6 +62,12 @@ public class Evaluator implements Visitor<Value> {
 		List<Exp> operands = e.all();
 		double result = 0;
 		for(Exp exp: operands) {
+			if(!(exp instanceof NumExp)) {
+				System.out.println("Addition operation requires numeric operands.");
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("Expression: " + exp.accept(this, env)); // Print the expression that caused the error
+				return new DynamicError("Addition operation requires numeric operands.");
+			}
 			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
 			result += intermediate.v(); //Semantics of AddExp in terms of the target language.
 		}
@@ -95,7 +101,7 @@ public class Evaluator implements Visitor<Value> {
 
     // Ensure the left operand is a boolean
     if (!(leftValue instanceof Value.BoolVal)) {
-        return new Value.DynamicError("Left operand of '&&' is not a boolean");
+        return new Value.DynamicError("Left operand of ('&&'/'and') is not a boolean");
     }
 
     // Short-circuit: if the left operand is false, return false
@@ -108,7 +114,7 @@ public class Evaluator implements Visitor<Value> {
 
     // Ensure the right operand is a boolean
     if (!(rightValue instanceof Value.BoolVal)) {
-        return new Value.DynamicError("Right operand of '&&' is not a boolean");
+        return new Value.DynamicError("Right operand of ('&&'/'and') is not a boolean");
     }
 
     return rightValue;
@@ -536,13 +542,33 @@ public Value visit(AST.InputExp e, Env env) {
         System.out.println(prompt.replace("\"", "")); // Remove quotes
         System.out.flush(); // Flush the output to ensure the prompt appears immediately
     }
-
+	else {
+		System.out.println("Please enter a value: ");
+		System.out.flush(); // Flush the output to ensure the prompt appears immediately
+	}
     // Read user input
     Scanner scanner = new Scanner(System.in);
     String userInput = scanner.nextLine();
-
-    // Return the user input as a string
-    return new Value.StringVal(userInput);
+    // Return the user input as a string)
+	if (userInput.matches(".*[a-zA-Z].*")) {
+        System.out.println("The userInput contains characters.");
+		System.out.flush(); // Flush the output to ensure it appears immediately
+		return new Value.StringVal(userInput);
+	}
+	else if (userInput.matches(".*[0-9].*")) {
+		System.out.println("The userInput contains numbers.");
+		System.out.flush(); // Flush the output to ensure it appears immediately
+		return new Value.NumVal(Double.parseDouble(userInput));
+	}
+	else if (userInput.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+		System.out.println("The userInput contains special characters.");
+		return new Value.StringVal(userInput);
+	}
+	else {
+		System.out.println("The userInput is empty or contains no valid characters.");
+		return new Value.StringVal(userInput);
+	}
+    
 }
 
 	private Env initialEnv() {
