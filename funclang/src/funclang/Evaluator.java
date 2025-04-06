@@ -237,12 +237,63 @@ public class Evaluator implements Visitor<Value> {
 	@Override
 	public Value visit(ModExp e, Env env) {
 		List<Exp> operands = e.all();
-		NumVal lVal = (NumVal) operands.get(0).accept(this, env);
-		double result = lVal.v(); 
-		for(int i=1; i<operands.size(); i++) {
-			NumVal rVal = (NumVal) operands.get(i).accept(this, env);
-			result = result % rVal.v();
+		Value firstOperand = operands.get(0).accept(this, env);
+
+		// Ensure the first operand is numeric
+		if (!(firstOperand instanceof NumVal)) {
+			System.out.println("--------------------");
+			System.out.println("Error: Modulus operation requires numeric operands.");
+			System.out.println("First operand is not numeric.");
+			System.out.println("Value: " + firstOperand.tostring());
+			if (operands.get(0) instanceof VarExp)
+				System.out.println("Variable: " + ((VarExp) operands.get(0)).name());
+			else
+				System.out.println("Expression: " + operands.get(0).accept(this, env).tostring() + " (" + operands.get(0).getClass().getSimpleName() + ')');
+			System.out.println("Type: " + firstOperand.getClass().getSimpleName());
+			System.out.println("Hint: Ensure all operands are numbers.");
+			System.out.println("--------------------");
+			return new DynamicError("Modulus operation requires numeric operands.");
 		}
+
+		double result = ((NumVal) firstOperand).v();
+
+		for (int i = 1; i < operands.size(); i++) {
+			Value nextOperand = operands.get(i).accept(this, env);
+
+			// Ensure the next operand is numeric
+			if (!(nextOperand instanceof NumVal)) {
+				System.out.println("--------------------");
+				System.out.println("Error: Modulus operation requires numeric operands.");
+				System.out.println("Operand is not numeric: " + nextOperand.tostring() + " (type: " + nextOperand.getClass().getSimpleName() + ")");
+				if (operands.get(i) instanceof VarExp)
+					System.out.println("Variable: " + ((VarExp) operands.get(i)).name());
+				else
+					System.out.println("Expression: " + operands.get(i).accept(this, env).tostring() + " (" + operands.get(i).getClass().getSimpleName() + ')');
+				System.out.println("Type: " + nextOperand.getClass().getSimpleName());
+				System.out.println("Hint: Ensure all operands are numbers.");
+				System.out.println("--------------------");
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				return new DynamicError("Modulus operation requires numeric operands.");
+			}
+
+			double nextValue = ((NumVal) nextOperand).v();
+
+			// Check for modulus by zero
+			if (nextValue == 0) {
+				System.out.println("--------------------");
+				System.out.println("Error: Modulus by zero detected.");
+				System.out.println("Expression causing the issue: " +
+					(operands.get(i) instanceof VarExp ? ((VarExp) operands.get(i)).name() : "unknown"));
+				System.out.println("Left operand value: " + result + " (type: NumVal)");
+				System.out.println("Right operand value: " + nextValue + " (type: NumVal)");
+				System.out.println("--------------------");
+				return new DynamicError("Modulus by zero in expression.");
+			}
+
+			// Perform the modulus operation
+			result = result % nextValue;
+		}
+
 		return new NumVal(result);
 	}
 
