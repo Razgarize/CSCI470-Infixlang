@@ -134,12 +134,12 @@ exponent returns [Exp ast] :
 
 // Comparison expressions
 compexp returns [Exp ast] :
-    e1=arithexp ('==' e2=arithexp { $ast = new EqualExp($e1.ast, $e2.ast); }
-                  | '>' e2=arithexp { $ast = new GreaterExp($e1.ast, $e2.ast); }
-                  | '<' e2=arithexp { $ast = new LessExp($e1.ast, $e2.ast); }
-                  | '!=' e2=arithexp { $ast = new NotEqualExp($e1.ast, $e2.ast); }
-                  | '<=' e2=arithexp { $ast = new LessEqualExp($e1.ast, $e2.ast); }
-                  | '>=' e2=arithexp { $ast = new GreaterEqualExp($e1.ast, $e2.ast); })?
+    e1=arithexp ('==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
+                  | '>' e2=num_or_str { $ast = new GreaterExp($e1.ast, $e2.ast); }
+                  | '<' e2=num_or_str { $ast = new LessExp($e1.ast, $e2.ast); }
+                  | '!=' e2=num_or_str { $ast = new NotEqualExp($e1.ast, $e2.ast); }
+                  | '<=' e2=num_or_str { $ast = new LessEqualExp($e1.ast, $e2.ast); }
+                  | '>=' e2=num_or_str { $ast = new GreaterEqualExp($e1.ast, $e2.ast); })?
     ;
 
 // Comments
@@ -153,6 +153,8 @@ num_or_str returns [Exp ast] :
     num=numexp { $ast = $num.ast; }
     | str=strexp { $ast = $str.ast; }
     | v=varexp { $ast = new VarExp($v.text); }
+    | '(' e=exp ')' { $ast = $e.ast; }
+    | a=arithexp { $ast = $a.ast; }
     ;
 
 // Boolean expressions
