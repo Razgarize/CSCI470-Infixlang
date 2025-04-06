@@ -482,9 +482,39 @@ public Value visit(Program p, Env env) {
 
 	@Override
 	public Value visit(GreaterEqualExp e, Env env) { // New for funclang.
-		Value.NumVal first = (Value.NumVal) e.first_exp().accept(this, env);
-		Value.NumVal second = (Value.NumVal) e.second_exp().accept(this, env);
-		return new Value.BoolVal(first.v() >= second.v());
+		Value first = e.first_exp().accept(this, env);
+		Value second = e.second_exp().accept(this, env);
+
+		// Check if both operands are numbers
+		if (first instanceof Value.NumVal && second instanceof Value.NumVal) {
+			return new Value.BoolVal(((Value.NumVal) first).v() >= ((Value.NumVal) second).v());
+		}
+
+		// Check if both operands are strings
+		if (first instanceof Value.StringVal && second instanceof Value.StringVal) {
+			return new Value.BoolVal(((Value.StringVal) first).v().compareTo(((Value.StringVal) second).v()) >= 0);
+		}
+
+		// Handle type mismatch
+		String firstType = first.getClass().getSimpleName();
+		String secondType = second.getClass().getSimpleName();
+
+		System.out.println("--------------------");
+		System.out.println("Error: Comparison operation ('>=') requires numeric or string operands.");
+		System.out.println("Expression causing the issue: " + 
+			(e.first_exp() instanceof VarExp ? ((VarExp) e.first_exp()).name() : "unknown") + 
+			" >= " + 
+			(e.second_exp() instanceof VarExp ? ((VarExp) e.second_exp()).name() : "unknown"));
+		System.out.println("First operand value: " + first.tostring() + " (type: " + firstType + ")");
+		System.out.println("Second operand value: " + second.tostring() + " (type: " + secondType + ")");
+		System.out.println("--------------------");
+
+		// Return a dynamic error with a detailed message
+		return new Value.DynamicError(
+			"Comparison operation ('>=') requires numeric or string operands. " +
+			"First operand type: " + firstType + ", " +
+			"Second operand type: " + secondType
+		);
 	}
 
 	
