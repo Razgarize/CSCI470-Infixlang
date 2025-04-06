@@ -173,18 +173,66 @@ public class Evaluator implements Visitor<Value> {
 
 	@Override
 	public Value visit(DivExp e, Env env) {
-		List<Exp> operands = e.all();
-		NumVal lVal = (NumVal) operands.get(0).accept(this, env);
-		double result = lVal.v(); 
-		for(int i=1; i<operands.size(); i++) {
-			NumVal rVal = (NumVal) operands.get(i).accept(this, env);
-			if(rVal.v() == 0) {
-				return new DynamicError("Division by zero in expression " /*+ ts.visit(e, env)*/);
-			}
-			result = result / rVal.v();
-		}
-		return new NumVal(result);
-	}
+    List<Exp> operands = e.all();
+    Value firstOperand = operands.get(0).accept(this, env);
+
+    // Ensure the first operand is numeric
+    if (!(firstOperand instanceof NumVal)) {
+        System.out.println("--------------------");
+        System.out.println("Error: Division operation requires numeric operands.");
+        System.out.println("First operand is not numeric.");
+        System.out.println("Value: " + firstOperand.tostring());
+		if(operands.get(0) instanceof VarExp)
+			System.out.println("Variable: " + ((VarExp) operands.get(0)).name());
+		else
+			System.out.println("Expression: " + operands.get(0).accept(this, env).tostring() + " (" + operands.get(0).getClass().getSimpleName() + ')');
+        System.out.println("Type: " + firstOperand.getClass().getSimpleName());
+        System.out.println("Hint: Ensure all operands are numbers.");
+        System.out.println("--------------------");
+        return new DynamicError("Division operation requires numeric operands.");
+    }
+
+    double result = ((NumVal) firstOperand).v();
+
+    for (int i = 1; i < operands.size(); i++) {
+        Value nextOperand = operands.get(i).accept(this, env);
+
+        // Ensure the next operand is numeric
+        if (!(nextOperand instanceof NumVal)) {
+            System.out.println("--------------------");
+            System.out.println("Error: Division operation requires numeric operands.");
+            System.out.println("Operand is not numeric: " + nextOperand.tostring() + " (type: " + nextOperand.getClass().getSimpleName() + ")");
+			if(operands.get(i) instanceof VarExp)
+			System.out.println("Variable: " + ((VarExp) operands.get(i)).name());
+		else
+			System.out.println("Expression: " + operands.get(i).accept(this, env).tostring() + " (" + operands.get(i).getClass().getSimpleName() + ')');
+			System.out.println("Type: " + nextOperand.getClass().getSimpleName());
+			System.out.println("Hint: Ensure all operands are numbers.");
+            System.out.println("--------------------");
+			System.out.flush(); // Flush the output to ensure it appears immediately
+            return new DynamicError("Division operation requires numeric operands.");
+        }
+
+        double nextValue = ((NumVal) nextOperand).v();
+
+        // Check for division by zero
+        if (nextValue == 0) {
+            System.out.println("--------------------");
+            System.out.println("Error: Division by zero detected.");
+            System.out.println("Expression causing the issue: " + 
+                (operands.get(i) instanceof VarExp ? ((VarExp) operands.get(i)).name() : "unknown"));
+            System.out.println("Left operand value: " + result + " (type: NumVal)");
+            System.out.println("Right operand value: " + nextValue + " (type: NumVal)");
+            System.out.println("--------------------");
+            return new DynamicError("Division by zero in expression.");
+        }
+
+        // Perform the division
+        result = result / nextValue;
+    }
+
+    return new NumVal(result);
+}
 
 	@Override
 	public Value visit(ModExp e, Env env) {
@@ -675,6 +723,11 @@ public Value visit(Program p, Env env) {
 	public Value visit(IfExp e, Env env) { // New for funclang.
     Object result = e.conditional().accept(this, env);
     if (!(result instanceof Value.BoolVal)) {
+		// Handle the case where the condition is not a boolean
+		System.out.println("--------------------");
+		System.out.println("Error: Condition not a boolean in expression.");
+		System.out.println("Expression causing the issue: if(" + e.conditional().accept(this, env).tostring() + ") {...} (" + e.conditional().getClass().getSimpleName() + ')');
+		System.out.println("--------------------");
         return new Value.DynamicError("Condition not a boolean in expression");
     }
     Value.BoolVal condition = (Value.BoolVal) result; // Dynamic checking
