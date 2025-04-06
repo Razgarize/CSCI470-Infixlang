@@ -692,58 +692,82 @@ public Value visit(Program p, Env env) {
 
 @Override
 public Value visit(AST.IncExp e, Env env) {
-    // Ensure the expression is a variable
-    if (!(e.fst() instanceof AST.VarExp)) {
-        return new Value.DynamicError("Increment operation requires a variable.");
-    }
+	// Ensure the expression is a variable
+	if (!(e.fst() instanceof AST.VarExp)) {
+		System.out.println("--------------------");
+		System.out.println("Error: Increment operation '++' requires a variable.");
+		System.out.println("Expression causing the issue: " + e.fst().accept(this, env).tostring() + " (" +e.fst().getClass().getSimpleName() + ')');
+		System.out.println("--------------------");
+		return new Value.DynamicError("Increment operation requires a variable.");
+	}
 
-    // Get the variable name
-    String varName = ((AST.VarExp) e.fst()).name();
+	// Get the variable name
+	String varName = ((AST.VarExp) e.fst()).name();
 
-    // Retrieve the current value of the variable
-    Value value = env.get(varName);
+	// Retrieve the current value of the variable
+	Value value = env.get(varName);
 
-    // Ensure the value is numeric
-    if (value instanceof NumVal) {
-        double incrementedValue = ((NumVal) value).v() + 1; // Increment the numeric value
+	// Ensure the value is numeric
+	if (value instanceof NumVal) {
+		double incrementedValue = ((NumVal) value).v() + 1; // Increment the numeric value
 
-        // Update the variable in the environment
-        ((GlobalEnv) env).extend(varName, new NumVal(incrementedValue));
+		// Update the variable in the environment
+		((GlobalEnv) env).extend(varName, new NumVal(incrementedValue));
 
-        // Return the incremented value
-        return new NumVal(incrementedValue);
-    }
+		// Return the incremented value
+		return new NumVal(incrementedValue);
+	}
 
-    // Return an error if the value is not numeric
-    return new Value.DynamicError("Increment operation is only valid for numbers.");
+	// Handle non-numeric values
+	System.out.println("--------------------");
+	System.out.println("Error: Increment operation '++' is only valid for numbers.");
+	System.out.println("Variable: " + varName);
+	System.out.println("Current value: " + (value != null ? value.tostring() : "null"));
+	System.out.println("Type: " + (value != null ? value.getClass().getSimpleName() : "null"));
+	System.out.println("--------------------");
+
+	// Return an error if the value is not numeric
+	return new Value.DynamicError("Increment operation is only valid for numbers.");
 }
 
 @Override
 public Value visit(AST.DeIncExp e, Env env) {
-    // Ensure the expression is a variable
-    if (!(e.fst() instanceof AST.VarExp)) {
-        return new Value.DynamicError("Increment operation requires a variable.");
-    }
+	// Ensure the expression is a variable
+	if (!(e.fst() instanceof AST.VarExp)) {
+		System.out.println("--------------------");
+		System.out.println("Error: Decrement operation '--' requires a variable.");
+		System.out.println("Expression causing the issue: " + e.fst().accept(this, env).tostring() + " (" + e.fst().getClass().getSimpleName() + ')');
+		System.out.println("--------------------");
+		return new Value.DynamicError("Decrement operation requires a variable.");
+	}
 
-    // Get the variable name
-    String varName = ((AST.VarExp) e.fst()).name();
+	// Get the variable name
+	String varName = ((AST.VarExp) e.fst()).name();
 
-    // Retrieve the current value of the variable
-    Value value = env.get(varName);
+	// Retrieve the current value of the variable
+	Value value = env.get(varName);
 
-    // Ensure the value is numeric
-    if (value instanceof NumVal) {
-        double incrementedValue = ((NumVal) value).v() - 1; // Increment the numeric value
+	// Ensure the value is numeric
+	if (value instanceof NumVal) {
+		double decrementedValue = ((NumVal) value).v() - 1; // Decrement the numeric value
 
-        // Update the variable in the environment
-        ((GlobalEnv) env).extend(varName, new NumVal(incrementedValue));
+		// Update the variable in the environment
+		((GlobalEnv) env).extend(varName, new NumVal(decrementedValue));
 
-        // Return the incremented value
-        return new NumVal(incrementedValue);
-    }
+		// Return the decremented value
+		return new NumVal(decrementedValue);
+	}
 
-    // Return an error if the value is not numeric
-    return new Value.DynamicError("Increment operation is only valid for numbers.");
+	// Handle non-numeric values
+	System.out.println("--------------------");
+	System.out.println("Error: Decrement operation '--' is only valid for numbers.");
+	System.out.println("Variable: " + varName);
+	System.out.println("Current value: " + (value != null ? value.tostring() : "null"));
+	System.out.println("Type: " + (value != null ? value.getClass().getSimpleName() : "null"));
+	System.out.println("--------------------");
+
+	// Return an error if the value is not numeric
+	return new Value.DynamicError("Decrement operation is only valid for numbers.");
 }
 
 @Override
