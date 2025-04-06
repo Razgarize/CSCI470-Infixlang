@@ -795,23 +795,31 @@ public Value visit(AST.InputExp e, Env env) {
     String userInput = scanner.nextLine();
     // Return the user input as a string)
 	if (userInput.matches(".*[a-zA-Z].*")) {
-        System.out.println("The userInput contains characters.");
-		System.out.flush(); // Flush the output to ensure it appears immediately
+		if (System.getProperty("debugMode") != null && System.getProperty("debugMode").equalsIgnoreCase("true")) {
+			System.out.println("The userInput contains characters.");
+			System.out.flush(); // Flush the output to ensure it appears immediately
+		}
 		return new Value.StringVal(userInput);
 	}
 	else if (userInput.matches(".*[0-9].*")) {
+		if (System.getProperty("debugMode") != null && System.getProperty("debugMode").equalsIgnoreCase("true")) {
 		System.out.println("The userInput contains numbers.");
 		System.out.flush(); // Flush the output to ensure it appears immediately
+		}
 		return new Value.NumVal(Double.parseDouble(userInput));
 	}
 	else if (userInput.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+		if (System.getProperty("debugMode") != null && System.getProperty("debugMode").equalsIgnoreCase("true")) {
 		System.out.println("The userInput contains special characters.");
 		System.out.flush(); // Flush the output to ensure it appears immediately
+		}
 		return new Value.StringVal(userInput);
 	}
 	else {
+		if (System.getProperty("debugMode") != null && System.getProperty("debugMode").equalsIgnoreCase("true")) {
 		System.out.println("The userInput is empty or contains no valid characters.");
 		System.out.flush(); // Flush the output to ensure it appears immediately
+		}
 		return new Value.StringVal(userInput);
 	}
     
