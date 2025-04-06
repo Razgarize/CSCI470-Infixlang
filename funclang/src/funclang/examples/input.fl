@@ -1,0 +1,7 @@
+x=input("please enter a value: ")
+
+while(x!=10)
+{
+    print(x)
+    x++
+}

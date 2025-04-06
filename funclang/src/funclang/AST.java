@@ -766,14 +766,17 @@ public static class OrExp extends Exp {
 		private Exp prompt;
 
 		public InputExp(Exp prompt) {
-			this.prompt = prompt;
+			this.prompt = prompt != null ? prompt : new StrExp("");
+		}
+
+		public InputExp() {
+			this.prompt = new StrExp("");
 		}
 
 		public Exp prompt() {
 			return prompt;
 		}
 
-		@Override
 		public <T> T accept(Visitor<T> visitor, Env env) {
 			return visitor.visit(this, env);
 		}

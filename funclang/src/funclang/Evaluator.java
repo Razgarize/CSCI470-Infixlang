@@ -530,9 +530,12 @@ public Value visit(AST.InputExp e, Env env) {
         return new Value.DynamicError("Input prompt must be a string");
     }
 
-    // Display the prompt (without appending ": ")
-    System.out.println(((Value.StringVal) promptValue).v().replace("\"", ""));
-	System.out.flush(); // Flush the output to ensure the prompt appears immediately
+    // Display the prompt (if not empty)
+    String prompt = ((Value.StringVal) promptValue).v();
+    if (!prompt.isEmpty()) {
+        System.out.println(prompt.replace("\"", "")); // Remove quotes
+        System.out.flush(); // Flush the output to ensure the prompt appears immediately
+    }
 
     // Read user input
     Scanner scanner = new Scanner(System.in);

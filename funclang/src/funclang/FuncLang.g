@@ -201,7 +201,8 @@ varexp returns [VarExp ast] :
      ;
 
 inputexp returns [InputExp ast] :
-    'input' '(' (StrLiteral)?  ( prompt=strexp ) ')' { $ast = new InputExp($prompt.ast); }
+    'input' '('  ( prompt=strexp ) ')' { $ast = new InputExp($prompt.ast); }
+    | 'input' '()' { $ast = new InputExp(); }
     ;
 
 
