@@ -8,6 +8,8 @@ import funclang.AST.BinaryComparator;
 import funclang.AST.CompoundArithExp;
 import funclang.AST.DefineDecl;
 import funclang.AST.Exp;
+import funclang.AST.Visitor;
+
 import java.util.Scanner;
 
 
@@ -186,6 +188,26 @@ public interface AST {
 
 		public AddExp(Exp left, Exp right) {
 			super(left, right);
+		}
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class IncExp extends CompoundArithExp {
+		public IncExp(Exp fst) {
+			super(fst);
+		}
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	public static class DeIncExp extends CompoundArithExp {
+		public DeIncExp(Exp fst) {
+			super(fst);
 		}
 		
 		public <T> T accept(Visitor<T> visitor, Env env) {
@@ -764,5 +786,7 @@ public interface AST {
 		// public T visit(AST.AndExp e, Env env); // New for Pyc
     	// public T visit(AST.OrExp e, Env env); // New for Pyc
 		// public T visit(AST.UserInputExp e, Env env); // New for Pyc
+		public T visit(AST.IncExp e, Env env); // New for Pyc
+		public T visit(AST.DeIncExp e, Env env); // New for Pyc
 	}	
 }

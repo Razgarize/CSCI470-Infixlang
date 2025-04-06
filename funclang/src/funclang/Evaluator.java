@@ -435,6 +435,64 @@ public Value visit(Program p, Env env) {
     return lastValue; // Return the result of the last expression
 }
 
+
+
+@Override
+public Value visit(AST.IncExp e, Env env) {
+    // Ensure the expression is a variable
+    if (!(e.fst() instanceof AST.VarExp)) {
+        return new Value.DynamicError("Increment operation requires a variable.");
+    }
+
+    // Get the variable name
+    String varName = ((AST.VarExp) e.fst()).name();
+
+    // Retrieve the current value of the variable
+    Value value = env.get(varName);
+
+    // Ensure the value is numeric
+    if (value instanceof NumVal) {
+        double incrementedValue = ((NumVal) value).v() + 1; // Increment the numeric value
+
+        // Update the variable in the environment
+        ((GlobalEnv) env).extend(varName, new NumVal(incrementedValue));
+
+        // Return the incremented value
+        return new NumVal(incrementedValue);
+    }
+
+    // Return an error if the value is not numeric
+    return new Value.DynamicError("Increment operation is only valid for numbers.");
+}
+
+@Override
+public Value visit(AST.DeIncExp e, Env env) {
+    // Ensure the expression is a variable
+    if (!(e.fst() instanceof AST.VarExp)) {
+        return new Value.DynamicError("Increment operation requires a variable.");
+    }
+
+    // Get the variable name
+    String varName = ((AST.VarExp) e.fst()).name();
+
+    // Retrieve the current value of the variable
+    Value value = env.get(varName);
+
+    // Ensure the value is numeric
+    if (value instanceof NumVal) {
+        double incrementedValue = ((NumVal) value).v() - 1; // Increment the numeric value
+
+        // Update the variable in the environment
+        ((GlobalEnv) env).extend(varName, new NumVal(incrementedValue));
+
+        // Return the incremented value
+        return new NumVal(incrementedValue);
+    }
+
+    // Return an error if the value is not numeric
+    return new Value.DynamicError("Increment operation is only valid for numbers.");
+}
+
 	private Env initialEnv() {
 		GlobalEnv initEnv = new GlobalEnv();
 		

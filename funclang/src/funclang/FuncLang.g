@@ -87,6 +87,12 @@ arithexp returns [Exp ast]
         $list.add($sr.ast);
         $ast = new SubExp($list);
     }
+    | inc=exponent '++' {
+        $ast = new IncExp($inc.ast);
+    }
+    | inc=exponent '--' {
+    $ast = new DeIncExp($inc.ast);
+    }
     | t=term { $ast = $t.ast; }
     ;
 
@@ -128,12 +134,12 @@ exponent returns [Exp ast] :
 
 // Comparison expressions
 compexp returns [Exp ast] :
-    e1=num_or_str ('==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
-                  | '>' e2=num_or_str { $ast = new GreaterExp($e1.ast, $e2.ast); }
-                  | '<' e2=num_or_str { $ast = new LessExp($e1.ast, $e2.ast); }
-                  | '!=' e2=num_or_str { $ast = new NotEqualExp($e1.ast, $e2.ast); }
-                  | '<=' e2=num_or_str { $ast = new LessEqualExp($e1.ast, $e2.ast); }
-                  | '>=' e2=num_or_str { $ast = new GreaterEqualExp($e1.ast, $e2.ast); })?
+    e1=arithexp ('==' e2=arithexp { $ast = new EqualExp($e1.ast, $e2.ast); }
+                  | '>' e2=arithexp { $ast = new GreaterExp($e1.ast, $e2.ast); }
+                  | '<' e2=arithexp { $ast = new LessExp($e1.ast, $e2.ast); }
+                  | '!=' e2=arithexp { $ast = new NotEqualExp($e1.ast, $e2.ast); }
+                  | '<=' e2=arithexp { $ast = new LessEqualExp($e1.ast, $e2.ast); }
+                  | '>=' e2=arithexp { $ast = new GreaterEqualExp($e1.ast, $e2.ast); })?
     ;
 
 // Comments

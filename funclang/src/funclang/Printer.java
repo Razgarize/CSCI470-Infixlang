@@ -141,6 +141,12 @@ public class Printer {
 		public String visit(AST.LessEqualExp e, Env env) {
 			return "";
 		}
+		public String visit(AST.IncExp e, Env env) {
+			return "";
+		}
+		public String visit(AST.DeIncExp e, Env env) {
+			return "";
+		}
 
 		// public String visit(AST.OrExp e, Env env) {
 		// 	return "";
