@@ -35,6 +35,7 @@ exp returns [Exp ast] :
     | comp=compexp { $ast = $comp.ast; }
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
     | log=logexp { $ast = $log.ast; }
+    | input=inputexp { $ast = $input.ast; }
     | a=arithexp { $ast = $a.ast; }
     ; //| id=Identifier '=' 'input' '(' e=userinput ')' { $ast = new DefineDecl($id.text, $e.ast); }
 
@@ -199,6 +200,9 @@ varexp returns [VarExp ast] :
     id=Identifier { $ast = new VarExp($id.text); }
      ;
 
+inputexp returns [InputExp ast] :
+    'input' '(' (StrLiteral)?  ( prompt=strexp ) ')' { $ast = new InputExp($prompt.ast); }
+    ;
 
 
 // Lexical rules

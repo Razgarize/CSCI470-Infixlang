@@ -49,6 +49,7 @@ public interface AST {
 
 	}
 
+	
 	public static class VarExp extends Exp {
 		String _name;
 
@@ -761,6 +762,23 @@ public static class OrExp extends Exp {
     }
 }
 
+	public static class InputExp extends Exp {
+		private Exp prompt;
+
+		public InputExp(Exp prompt) {
+			this.prompt = prompt;
+		}
+
+		public Exp prompt() {
+			return prompt;
+		}
+
+		@Override
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 	// public static class AndExp extends Exp {
 	// 	private Exp _left;
 	// 	private Exp _right;
@@ -834,5 +852,6 @@ public static class OrExp extends Exp {
 		public T visit(AST.DeIncExp e, Env env); // New for Pyc
 		public T visit(AST.AndExp e, Env env); // New for Pyc
 		public T visit(AST.OrExp e, Env env); // New for Pyc
+		public T visit(AST.InputExp e, Env env); // New for Pyc
 	}	
 }

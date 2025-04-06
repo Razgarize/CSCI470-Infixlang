@@ -10,11 +10,13 @@ while(x<10){
 	}
 	y=0
 	if( x%2==0 ){
-		print("x is even")
+		print("x is even", x)
 	}
 	else{
-		print("x is odd")
+		print("x is odd", x)
 	}
-	print("x =", x)
+	if(x%2==0 and x%3==0 and x%1==1){
+		print("x is divisable by 2 and 3 and 1 when x =", x)
+	}
 	x++
 }

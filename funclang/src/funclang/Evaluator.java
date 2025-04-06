@@ -148,6 +148,9 @@ public class Evaluator implements Visitor<Value> {
 		double result = lVal.v(); 
 		for(int i=1; i<operands.size(); i++) {
 			NumVal rVal = (NumVal) operands.get(i).accept(this, env);
+			if(rVal.v() == 0) {
+				return new DynamicError("Division by zero in expression " /*+ ts.visit(e, env)*/);
+			}
 			result = result / rVal.v();
 		}
 		return new NumVal(result);
@@ -208,9 +211,19 @@ public Value visit(Program p, Env env) {
 
 	@Override
 	public Value visit(VarExp e, Env env) {
-		// Previously, all variables had value 42. New semantics.
-		return env.get(e.name());
-	}	
+    // Look up the variable in the environment
+    Value value = env.get(e.name());
+
+    // If the variable is not found, return a dynamic error
+    if (value == null) {
+		System.out.println("Undefined variable: " + e.name());
+		System.out.flush(); // Flush the output to ensure it appears immediately
+        return new Value.DynamicError("Undefined variable: " + e.name());
+    }
+
+    // Return the value of the variable
+    return value;
+}	
 
 	@Override
 	public Value visit(LetExp e, Env env) { // New for varlang.
@@ -273,6 +286,7 @@ public Value visit(Program p, Env env) {
         }
 
         System.out.println(output.toString().trim()); // Print the concatenated output
+		System.out.flush(); // Flush the output to ensure it appears immediately
         return new Value.UnitVal(); // Return UnitVal
     }
 
@@ -544,6 +558,28 @@ public Value visit(AST.DeIncExp e, Env env) {
 
     // Return an error if the value is not numeric
     return new Value.DynamicError("Increment operation is only valid for numbers.");
+}
+
+@Override
+public Value visit(AST.InputExp e, Env env) {
+    // Evaluate the prompt expression
+    Value promptValue = e.prompt().accept(this, env);
+
+    // Ensure the prompt is a string
+    if (!(promptValue instanceof Value.StringVal)) {
+        return new Value.DynamicError("Input prompt must be a string");
+    }
+
+    // Display the prompt (without appending ": ")
+    System.out.println(((Value.StringVal) promptValue).v());
+	System.out.flush(); // Flush the output to ensure the prompt appears immediately
+
+    // Read user input
+    Scanner scanner = new Scanner(System.in);
+    String userInput = scanner.nextLine();
+
+    // Return the user input as a string
+    return new Value.StringVal(userInput);
 }
 
 	private Env initialEnv() {

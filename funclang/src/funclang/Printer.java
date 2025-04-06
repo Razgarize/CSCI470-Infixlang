@@ -11,7 +11,7 @@ public class Printer {
 			return;
 	}
 	public void print(Exception e) {
-		//System.out.println(e.toString());
+		System.out.println(e.toString());
 		return;
 	}
 	
@@ -145,6 +145,15 @@ public class Printer {
 			return "";
 		}
 		public String visit(AST.DeIncExp e, Env env) {
+			return "";
+		}
+		public String visit(AST.OrExp e, Env env) {
+			return "";
+		}
+		public String visit(AST.AndExp e, Env env) {
+			return "";
+		}
+		public String visit(AST.InputExp e, Env env) {
 			return "";
 		}
 
