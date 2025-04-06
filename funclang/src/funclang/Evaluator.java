@@ -241,19 +241,7 @@ public Value visit(Program p, Env env) {
 		return (Value) e.body().accept(this, new_env);		
 	}	
 
-	// @Override
-    // public Value visit(UserInputExp e, Env env) {
-    //     // Evaluate the prompt expression
-    //     Value promptValue = e.prompt().accept(this, env);
-    //     System.out.print(promptValue + ": "); // Display the prompt
 
-    //     // Read user input
-    //     Scanner scanner = new Scanner(System.in);
-    //     String userInput = scanner.nextLine();
-
-    //     // Return the user input as a string
-    //     return new StringVal(userInput);
-    // }
 	
     @Override
     public Value visit(AST.PrintExp e, Env env) {
@@ -297,7 +285,8 @@ public Value visit(Program p, Env env) {
 		Value value = (Value) value_exp.accept(this, env);
 		((GlobalEnv) initEnv).extend(name, value);
 		return value;		
-	}	
+	}
+	
 
 	@Override
 	public Value visit(LambdaExp e, Env env) {
@@ -396,35 +385,6 @@ public Value visit(Program p, Env env) {
 		Value second = (Value) e.snd().accept(this, env);
 		return new Value.PairVal(first, second);
 	}
-// 	@Override
-// 	public Value visit(AST.AndExp e, Env env) {
-// 		Value left = e.left().accept(this, env);
-// 		if (left instanceof BoolVal && !((BoolVal) left).v()) {
-// 			// Short-circuit: if left is false, return false
-// 			return new BoolVal(false);
-// 		}
-// 		// Otherwise, evaluate the right operand
-// 		Value right = e.right().accept(this, env);
-// 		if (right instanceof BoolVal) {
-// 			return new BoolVal(((BoolVal) right).v());
-// 		}
-// 		throw new EvalException("AndExp requires boolean operands");
-// 	}
-
-// 	@Override
-// 	public Value visit(AST.OrExp e, Env env) {
-//     Value left = e.left().accept(this, env);
-//     if (left instanceof BoolVal && ((BoolVal) left).v()) {
-//         // Short-circuit: if left is true, return true
-//         return new BoolVal(true);
-//     }
-//     // Otherwise, evaluate the right operand
-//     Value right = e.right().accept(this, env);
-//     if (right instanceof BoolVal) {
-//         return new BoolVal(((BoolVal) right).v());
-//     }
-//     throw new EvalException("OrExp requires boolean operands");
-// }
 
 
 	@Override
@@ -571,7 +531,7 @@ public Value visit(AST.InputExp e, Env env) {
     }
 
     // Display the prompt (without appending ": ")
-    System.out.println(((Value.StringVal) promptValue).v());
+    System.out.println(((Value.StringVal) promptValue).v().replace("\"", ""));
 	System.out.flush(); // Flush the output to ensure the prompt appears immediately
 
     // Read user input
