@@ -4,7 +4,7 @@ while(x<10){
 	while(y<5)
 	{
 		if((y%2)==0){
-			print("y is even" "y = ", y)
+			print("y is even", "y = ", y)
 		}
 		y++
 	}
