@@ -34,6 +34,7 @@ exp returns [Exp ast] :
     | val=num_or_str { $ast = $val.ast; }
     | comp=compexp { $ast = $comp.ast; }
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
+    | log=logexp { $ast = $log.ast; }
     | a=arithexp { $ast = $a.ast; }
     ; //| id=Identifier '=' 'input' '(' e=userinput ')' { $ast = new DefineDecl($id.text, $e.ast); }
 
@@ -162,6 +163,13 @@ boolexp returns [BoolExp ast] :
     TrueLiteral { $ast = new BoolExp(true); }
     | FalseLiteral { $ast = new BoolExp(false); }
     | '(' e=boolexp ')' { $ast = $e.ast; }
+    ;
+
+// Logical expressions
+logexp returns [Exp ast]
+    : left=logexp ('&&' | 'and') right=compexp { $ast = new AndExp($left.ast, $right.ast); }
+    | left=logexp ('||' | 'or') right=compexp { $ast = new OrExp($left.ast, $right.ast); }
+    | compexp { $ast = $compexp.ast; }
     ;
 
 // String expressions

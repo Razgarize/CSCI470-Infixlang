@@ -1,13 +1,15 @@
 x=0
-y=1
+y=0
 while(x<10){
 	while(y<5)
 	{
+		if((y%2)==0){
+			print("y is even" "y = ", y)
+		}
 		y++
-		print("y = ", y)
 	}
-	z = x%2
-	if( z==0 ){
+	y=0
+	if( x%2==0 ){
 		print("x is even")
 	}
 	else{

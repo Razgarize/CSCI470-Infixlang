@@ -714,6 +714,52 @@ public interface AST {
 			return visitor.visit(this, env);
 		}
 	}
+	public static class AndExp extends Exp {
+		private Exp left;
+		private Exp right;
+	
+		public AndExp(Exp left, Exp right) {
+			this.left = left;
+			this.right = right;
+		}
+	
+		public Exp left() {
+			return left;
+		}
+	
+		public Exp right() {
+			return right;
+		}
+	
+		
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
+	
+public static class OrExp extends Exp {
+    private Exp left;
+    private Exp right;
+
+    public OrExp(Exp left, Exp right) {
+        this.left = left;
+        this.right = right;
+    }
+
+    public Exp left() {
+        return left;
+    }
+
+    public Exp right() {
+        return right;
+    }
+
+   
+    public <T> T accept(Visitor<T> visitor, Env env) {
+        return visitor.visit(this, env);
+    }
+}
 
 	// public static class AndExp extends Exp {
 	// 	private Exp _left;
@@ -783,10 +829,10 @@ public interface AST {
 		public T visit(AST.NullExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.WhileExp e, Env env); // New for Pyc
 		public T visit(AST.PrintExp e, Env env); // New for Pyc
-		// public T visit(AST.AndExp e, Env env); // New for Pyc
-    	// public T visit(AST.OrExp e, Env env); // New for Pyc
 		// public T visit(AST.UserInputExp e, Env env); // New for Pyc
 		public T visit(AST.IncExp e, Env env); // New for Pyc
 		public T visit(AST.DeIncExp e, Env env); // New for Pyc
+		public T visit(AST.AndExp e, Env env); // New for Pyc
+		public T visit(AST.OrExp e, Env env); // New for Pyc
 	}	
 }

@@ -87,6 +87,59 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(BoolExp e, Env env) {
 		return new BoolVal(e.v());
 	}
+	
+	@Override
+	public Value visit(AST.AndExp e, Env env) {
+    // Evaluate the left operand
+    Value leftValue = e.left().accept(this, env);
+
+    // Ensure the left operand is a boolean
+    if (!(leftValue instanceof Value.BoolVal)) {
+        return new Value.DynamicError("Left operand of '&&' is not a boolean");
+    }
+
+    // Short-circuit: if the left operand is false, return false
+    if (!((Value.BoolVal) leftValue).v()) {
+        return new Value.BoolVal(false);
+    }
+
+    // Otherwise, evaluate the right operand
+    Value rightValue = e.right().accept(this, env);
+
+    // Ensure the right operand is a boolean
+    if (!(rightValue instanceof Value.BoolVal)) {
+        return new Value.DynamicError("Right operand of '&&' is not a boolean");
+    }
+
+    return rightValue;
+	}
+
+	
+	@Override
+	public Value visit(AST.OrExp e, Env env) {
+    // Evaluate the left operand
+    Value leftValue = e.left().accept(this, env);
+
+    // Ensure the left operand is a boolean
+    if (!(leftValue instanceof Value.BoolVal)) {
+        return new Value.DynamicError("Left operand of '||' is not a boolean");
+    }
+
+    // Short-circuit: if the left operand is true, return true
+    if (((Value.BoolVal) leftValue).v()) {
+        return new Value.BoolVal(true);
+    }
+
+    // Otherwise, evaluate the right operand
+    Value rightValue = e.right().accept(this, env);
+
+    // Ensure the right operand is a boolean
+    if (!(rightValue instanceof Value.BoolVal)) {
+        return new Value.DynamicError("Right operand of '||' is not a boolean");
+    }
+
+    return rightValue;
+	}
 
 	@Override
 	public Value visit(DivExp e, Env env) {
