@@ -59,44 +59,42 @@ public class Evaluator implements Visitor<Value> {
 	
 	@Override
 	public Value visit(AddExp e, Env env) {
-		List<Exp> operands = e.all();
-		double result = 0;
-		boolean Errorchecker = false;
-		for(Exp exp: operands) {
-			try {
-			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
-			result += intermediate.v(); //Semantics of AddExp in terms of the target language.
-			} catch (ClassCastException ex) {
-				// Handle the case where the operand is not a NumVal
-				String varName = ((VarExp) exp).name(); // Get the variable name
-				System.out.println("--------------------"); // Print a separator for clarity
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("Error: " + ex.getMessage()); // Print the error message
-				System.out.println("Addition operation requires numeric operands.");
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("Expression: " + exp.accept(this, env)); // Print the expression that caused the error
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("Variable: " + varName); // Print the variable name
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("--------------------"); // Print a separator for clarity
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				Errorchecker = true;
-			} catch (NullPointerException ex) {
-				// Handle the case where the operand is null
-				System.out.println("--------------------"); // Print a separator for clarity
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("Error: " + ex.getMessage()); // Print the error message
-				System.out.println("Addition operation requires numeric operands.");
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("Expression: " + exp.accept(this, env)); // Print the expression that caused the error
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				System.out.println("Variable: " + ((VarExp) exp).name()); // Print the variable name
-				System.out.flush(); // Flush the output to ensure it appears immediately
-				Errorchecker = true;
-			} 
-		}
-		return new NumVal(result);
-	}
+    List<Exp> operands = e.all();
+    double result = 0;
+
+    for (Exp exp : operands) {
+        Value value = exp.accept(this, env);
+
+        // Ensure the operand is numeric
+        if (!(value instanceof NumVal)) {
+            System.out.println("--------------------");
+            System.out.println("Error: Addition operation requires numeric operands.");
+            System.out.println("Expression: " + exp.getClass().getSimpleName());
+            if (exp instanceof VarExp) {
+                System.out.println("Variable: " + ((VarExp) exp).name());
+            } else if (value instanceof StringVal) {
+                System.out.println("String: " + ((StringVal) value).v());
+            } else if (value instanceof BoolVal) {
+                System.out.println("Boolean: " + ((BoolVal) value).v());
+            } else if (value instanceof UnitVal) {
+                System.out.println("Unit: Unit");
+            } else if (value instanceof PairVal) {
+                System.out.println("Pair: " + ((PairVal) value).toString());
+            } else {
+                System.out.println("Unknown type: " + value.getClass().getSimpleName());
+            }
+			System.out.println("Value: " + value.tostring() + " (type: " + value.getClass().getSimpleName() + ")");
+            System.out.println("Hint: Ensure all operands are numbers.");
+            System.out.println("--------------------");
+            return new DynamicError("Addition operation requires numeric operands.");
+        }
+
+        // Add the numeric value to the result
+        result += ((NumVal) value).v();
+    }
+
+    return new NumVal(result);
+}
 	
 	@Override
 	public Value visit(UnitExp e, Env env) {
