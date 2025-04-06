@@ -136,7 +136,7 @@ exponent returns [Exp ast] :
 
 // Comparison expressions
 compexp returns [Exp ast] :
-    e1=arithexp ('==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
+    e1=num_or_str ('==' e2=num_or_str { $ast = new EqualExp($e1.ast, $e2.ast); }
                   | '>' e2=num_or_str { $ast = new GreaterExp($e1.ast, $e2.ast); }
                   | '<' e2=num_or_str { $ast = new LessExp($e1.ast, $e2.ast); }
                   | '!=' e2=num_or_str { $ast = new NotEqualExp($e1.ast, $e2.ast); }
