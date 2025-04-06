@@ -562,10 +562,12 @@ public Value visit(AST.InputExp e, Env env) {
 	}
 	else if (userInput.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
 		System.out.println("The userInput contains special characters.");
+		System.out.flush(); // Flush the output to ensure it appears immediately
 		return new Value.StringVal(userInput);
 	}
 	else {
 		System.out.println("The userInput is empty or contains no valid characters.");
+		System.out.flush(); // Flush the output to ensure it appears immediately
 		return new Value.StringVal(userInput);
 	}
     
