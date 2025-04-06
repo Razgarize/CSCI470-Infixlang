@@ -61,6 +61,7 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(AddExp e, Env env) {
 		List<Exp> operands = e.all();
 		double result = 0;
+		boolean Errorchecker = false;
 		for(Exp exp: operands) {
 			try {
 			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
@@ -68,13 +69,31 @@ public class Evaluator implements Visitor<Value> {
 			} catch (ClassCastException ex) {
 				// Handle the case where the operand is not a NumVal
 				String varName = ((VarExp) exp).name(); // Get the variable name
+				System.out.println("--------------------"); // Print a separator for clarity
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("Error: " + ex.getMessage()); // Print the error message
 				System.out.println("Addition operation requires numeric operands.");
 				System.out.flush(); // Flush the output to ensure it appears immediately
 				System.out.println("Expression: " + exp.accept(this, env)); // Print the expression that caused the error
 				System.out.flush(); // Flush the output to ensure it appears immediately
 				System.out.println("Variable: " + varName); // Print the variable name
-				return new DynamicError("Addition operation requires numeric operands.");
-			}
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("--------------------"); // Print a separator for clarity
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				Errorchecker = true;
+			} catch (NullPointerException ex) {
+				// Handle the case where the operand is null
+				System.out.println("--------------------"); // Print a separator for clarity
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("Error: " + ex.getMessage()); // Print the error message
+				System.out.println("Addition operation requires numeric operands.");
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("Expression: " + exp.accept(this, env)); // Print the expression that caused the error
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("Variable: " + ((VarExp) exp).name()); // Print the variable name
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				Errorchecker = true;
+			} 
 		}
 		return new NumVal(result);
 	}
