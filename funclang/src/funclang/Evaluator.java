@@ -62,14 +62,19 @@ public class Evaluator implements Visitor<Value> {
 		List<Exp> operands = e.all();
 		double result = 0;
 		for(Exp exp: operands) {
-			if(!(exp instanceof NumExp)) {
+			try {
+			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
+			result += intermediate.v(); //Semantics of AddExp in terms of the target language.
+			} catch (ClassCastException ex) {
+				// Handle the case where the operand is not a NumVal
+				String varName = ((VarExp) exp).name(); // Get the variable name
 				System.out.println("Addition operation requires numeric operands.");
 				System.out.flush(); // Flush the output to ensure it appears immediately
 				System.out.println("Expression: " + exp.accept(this, env)); // Print the expression that caused the error
+				System.out.flush(); // Flush the output to ensure it appears immediately
+				System.out.println("Variable: " + varName); // Print the variable name
 				return new DynamicError("Addition operation requires numeric operands.");
 			}
-			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
-			result += intermediate.v(); //Semantics of AddExp in terms of the target language.
 		}
 		return new NumVal(result);
 	}
