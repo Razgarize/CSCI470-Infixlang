@@ -161,6 +161,7 @@ num_or_str returns [Exp ast] :
 boolexp returns [BoolExp ast] :
     TrueLiteral { $ast = new BoolExp(true); }
     | FalseLiteral { $ast = new BoolExp(false); }
+    | '(' e=boolexp ')' { $ast = $e.ast; }
     ;
 
 // String expressions
@@ -207,8 +208,8 @@ Null : 'null?';
 Less : '<';
 Equal : '=';
 Greater : '>';
-TrueLiteral : 'True';
-FalseLiteral : 'False';
+TrueLiteral : 'true';
+FalseLiteral : 'false';
 While : 'while';
 Print : 'print';
 
