@@ -157,12 +157,10 @@ public class Printer {
 			return "";
 		}
 
-		// public String visit(AST.OrExp e, Env env) {
-		// 	return "";
-		// }
-		// public String visit(AST.AndExp e, Env env) {
-		// 	return "";
-		// }
+		public String visit(AST.RandomExp e, Env env) {
+			return "";
+		}
+
 		// public String visit(AST.NotExp e, Env env) {
 		// 	return "";
 		// }

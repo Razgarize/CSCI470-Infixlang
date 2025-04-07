@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import funclang.AST.AddExp;
 import funclang.AST.BoolExp;
@@ -46,6 +47,8 @@ import funclang.Value.NumVal;
 import funclang.Value.PairVal;
 import funclang.Value.StringVal;
 import funclang.Value.UnitVal;
+
+
 
 public class Evaluator implements Visitor<Value> {
 	
@@ -333,7 +336,7 @@ public class Evaluator implements Visitor<Value> {
 
 		return new NumVal(result);
 	}
-	
+
 @Override
 public Value visit(Program p, Env env) {
     try {
@@ -944,6 +947,48 @@ public Value visit(AST.DeIncExp e, Env env) {
 
 	// Return an error if the value is not numeric
 	return new Value.DynamicError("Decrement operation is only valid for numbers.");
+}
+
+@Override
+public Value visit(AST.RandomExp e, Env env) {
+    // Evaluate the `min` expression
+    Value minValue = e.min().accept(this, env);
+
+    // Ensure `min` is numeric
+    if (!(minValue instanceof NumVal)) {
+        return new DynamicError("RandomExp requires a numeric value for min.");
+    }
+
+    double min = ((NumVal) minValue).v();
+
+    // If `max` is null, treat it as a single argument case
+    double max = min;
+    if (e.max() != null) {
+        // Evaluate the `max` expression
+        Value maxValue = e.max().accept(this, env);
+
+        // Ensure `max` is numeric
+        if (!(maxValue instanceof NumVal)) {
+			System.out.println("--------------------");
+			System.out.println("Error: RandomExp requires a numeric value for max.");
+			System.out.println("Expression causing the issue: " + e.max().accept(this, env).tostring() + " (" + e.max().getClass().getSimpleName() + ')');
+			System.out.println("--------------------");
+            return new DynamicError("RandomExp requires a numeric value for max.");
+        }
+
+        max = ((NumVal) maxValue).v();
+    }
+
+    // Ensure `min <= max`
+    if (min > max) {
+        return new DynamicError("RandomExp requires min <= max.");
+    }
+
+    // Generate a random integer between `min` and `max` (inclusive)
+    int randomInt = (int) (Math.random() * (max - min + 1) + min);
+
+    // Return the random integer as a double
+    return new NumVal((double) randomInt);
 }
 
 @Override

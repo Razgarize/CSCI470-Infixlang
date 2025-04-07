@@ -36,6 +36,7 @@ exp returns [Exp ast] :
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
     | log=logexp { $ast = $log.ast; }
     | input=inputexp { $ast = $input.ast; }
+    | random=randomexp { $ast = $random.ast; }
     | a=arithexp { $ast = $a.ast; }
     ; //| id=Identifier '=' 'input' '(' e=userinput ')' { $ast = new DefineDecl($id.text, $e.ast); }
 
@@ -43,6 +44,10 @@ exp returns [Exp ast] :
 //     e=exp
 //     { $ast = new UserInputExp($e.ast); }
 //     ;
+
+randomexp returns [RandomExp ast] :
+     'random' '(' e1=exp ',' e2=exp ')' { $ast = new RandomExp($e1.ast, $e2.ast); }
+    ;
 
 // Print expression
 printexp returns [PrintExp ast]

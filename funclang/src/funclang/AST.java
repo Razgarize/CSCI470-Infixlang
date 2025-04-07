@@ -2,6 +2,7 @@ package funclang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import funclang.AST.ASTNode;
 import funclang.AST.BinaryComparator;
@@ -783,39 +784,33 @@ public static class OrExp extends Exp {
 		}
 	}
 
-	// public static class AndExp extends Exp {
-	// 	private Exp _left;
-	// 	private Exp _right;
-	
-	// 	public AndExp(Exp left, Exp right) {
-	// 		_left = left;
-	// 		_right = right;
-	// 	}
-	
-	// 	public Exp left() { return _left; }
-	// 	public Exp right() { return _right; }
-	
-	// 	public <T> T accept(Visitor<T> visitor, Env env) {
-	// 		return visitor.visit(this, env);
-	// 	}
-	// }
+	public static class RandomExp extends Exp {
+		private Exp _min;
+		private Exp _max;
+		
 
-	// public static class OrExp extends Exp {
-	// 	private Exp _left;
-	// 	private Exp _right;
-	
-	// 	public OrExp(Exp left, Exp right) {
-	// 		_left = left;
-	// 		_right = right;
-	// 	}
-	
-	// 	public Exp left() { return _left; }
-	// 	public Exp right() { return _right; }
-	
-	// 	public <T> T accept(Visitor<T> visitor, Env env) {
-	// 		return visitor.visit(this, env);
-	// 	}
-	// }
+
+		// Constructor for two arguments
+		public RandomExp(Exp min, Exp max) {
+			_min = min;
+			_max = max;
+
+		}
+
+		public Exp min() {
+			return _min;
+		}
+
+		public Exp max() {
+			return _max;
+		}
+
+		@Override
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
+
 
 	
 	public interface Visitor <T> {
@@ -857,5 +852,6 @@ public static class OrExp extends Exp {
 		public T visit(AST.AndExp e, Env env); // New for Pyc
 		public T visit(AST.OrExp e, Env env); // New for Pyc
 		public T visit(AST.InputExp e, Env env); // New for Pyc
+		public T visit(AST.RandomExp e, Env env); // New for Pyc
 	}	
 }
