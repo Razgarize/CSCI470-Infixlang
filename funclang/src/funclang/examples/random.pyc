@@ -9,7 +9,7 @@ while(roll){
 die1 = (random(1, 100)) % 6+1
 die2 = (random(1, 100)) % 6+1
 
-print(die1, die2)
+print(die1, die2) //we can print this as much as we want!
 
 input1 = input("Would you like to roll again? Yes or No")
 

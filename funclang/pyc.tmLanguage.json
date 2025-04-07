@@ -1,0 +1,23 @@
+{
+    "scopeName": "source.pyc",
+    "patterns": [
+        {
+            "match": "\\b(true|false)\\b",
+            "name": "constant.language.boolean.pyc"
+        },
+        {
+            "match": "\\b(print|input|while|if)\\b",
+            "name": "keyword.control.pyc"
+        },
+        {
+            "match": "\".*?\"",
+            "name": "string.quoted.double.pyc"
+        },
+        {
+            "match": "\\b\\d+\\b",
+            "name": "constant.numeric.pyc"
+        }
+    ],
+    "repository": {},
+    "fileTypes": ["pyc"]
+}

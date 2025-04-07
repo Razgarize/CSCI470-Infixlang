@@ -1,0 +1,10 @@
+"files.associations": {
+    "*.pyc": "pyc"
+},
+"custom-syntax-highlighting.languages": [
+    {
+        "id": "pyc",
+        "scopeName": "source.pyc",
+        "path": "./syntaxes/pyc.tmLanguage.json"
+    }
+]
