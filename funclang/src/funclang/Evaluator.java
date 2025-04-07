@@ -299,12 +299,41 @@ public class Evaluator implements Visitor<Value> {
 	public Value visit(MultExp e, Env env) {
 		List<Exp> operands = e.all();
 		double result = 1;
-		for(Exp exp: operands) {
-			NumVal intermediate = (NumVal) exp.accept(this, env); // Dynamic type-checking
-			result *= intermediate.v(); //Semantics of MultExp.
+
+		for (Exp exp : operands) {
+			Value value = exp.accept(this, env);
+
+			// Ensure the operand is numeric
+			if (!(value instanceof NumVal)) {
+				System.out.println("--------------------");
+				System.out.println("Error: Multiplication operation requires numeric operands.");
+				System.out.println("Expression: " + exp.getClass().getSimpleName());
+				if (exp instanceof VarExp) {
+					System.out.println("Variable: " + ((VarExp) exp).name());
+				} else if (value instanceof StringVal) {
+					System.out.println("String: " + ((StringVal) value).v());
+				} else if (value instanceof BoolVal) {
+					System.out.println("Boolean: " + ((BoolVal) value).v());
+				} else if (value instanceof UnitVal) {
+					System.out.println("Unit: Unit");
+				} else if (value instanceof PairVal) {
+					System.out.println("Pair: " + ((PairVal) value).toString());
+				} else {
+					System.out.println("Unknown type: " + value.getClass().getSimpleName());
+				}
+				System.out.println("Value: " + value.tostring() + " (type: " + value.getClass().getSimpleName() + ")");
+				System.out.println("Hint: Ensure all operands are numbers.");
+				System.out.println("--------------------");
+				return new DynamicError("Multiplication operation requires numeric operands.");
+			}
+
+			// Multiply the numeric value to the result
+			result *= ((NumVal) value).v();
 		}
+
 		return new NumVal(result);
 	}
+	
 @Override
 public Value visit(Program p, Env env) {
     try {
