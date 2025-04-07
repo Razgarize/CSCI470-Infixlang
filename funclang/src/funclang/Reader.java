@@ -50,6 +50,7 @@ public class Reader {
 	private String runFile(String programText) throws IOException {
 		if(programText.startsWith("run ")){
 			programText = readFile(getProgramDirectory() + programText.substring(4));
+			System.out.println("Running file...");
 		}
 		return programText; 
 	}

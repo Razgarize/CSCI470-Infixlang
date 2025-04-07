@@ -35,10 +35,10 @@ exp returns [Exp ast] :
     | comp=compexp { $ast = $comp.ast; }
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
     | log=logexp { $ast = $log.ast; }
-    | input=inputexp { $ast = $input.ast; }
     | random=randomexp { $ast = $random.ast; }
+    | input=inputexp { $ast = $input.ast; }
     | a=arithexp { $ast = $a.ast; }
-    ; //| id=Identifier '=' 'input' '(' e=userinput ')' { $ast = new DefineDecl($id.text, $e.ast); }
+    ; 
 
 // userinput returns [Exp ast] :
 //     e=exp

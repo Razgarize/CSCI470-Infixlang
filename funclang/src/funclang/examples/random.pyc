@@ -1,0 +1,22 @@
+//string inputs must have "some double qutation marks"
+//otherwise, it will break.
+
+roll = true
+input1 = "yes"
+
+while(roll){
+
+die1 = (random(1, 100)) % 6+1
+die2 = (random(1, 100)) % 6+1
+
+print(die1, die2)
+
+input1 = input("Would you like to roll again? Yes or No")
+
+if(input1 != "Yes"){
+    roll = false
+}
+
+}
+
+print("Good Bye!")
