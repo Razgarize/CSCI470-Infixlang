@@ -326,15 +326,60 @@ public Value visit(Program p, Env env) {
 
 	@Override
 	public Value visit(SubExp e, Env env) {
-		List<Exp> operands = e.all();
-		NumVal lVal = (NumVal) operands.get(0).accept(this, env);
-		double result = lVal.v();
-		for(int i=1; i<operands.size(); i++) {
-			NumVal rVal = (NumVal) operands.get(i).accept(this, env);
-			result = result - rVal.v();
+    List<Exp> operands = e.all();
+
+    // Ensure there is at least one operand
+    if (operands.isEmpty()) {
+        System.out.println("--------------------");
+        System.out.println("Error: Subtraction operation requires at least one operand.");
+        System.out.println("--------------------");
+        return new DynamicError("Subtraction operation requires at least one operand.");
+    }
+
+    // Evaluate the first operand
+    Value firstValue = operands.get(0).accept(this, env);
+
+    // Ensure the first operand is numeric
+    if (!(firstValue instanceof NumVal)) {
+        System.out.println("--------------------");
+        System.out.println("Error: Subtraction operation requires numeric operands.");
+        System.out.println("First operand is not numeric.");
+        System.out.println("Value: " + firstValue.tostring() + " (type: " + firstValue.getClass().getSimpleName() + ")");
+		if (operands.get(0) instanceof VarExp) {
+			System.out.println("Variable: " + ((VarExp) operands.get(0)).name());
+		} else {
+			System.out.println("Expression: " + operands.get(0).accept(this, env).tostring() + " (" + operands.get(0).getClass().getSimpleName() + ')');
 		}
-		return new NumVal(result);
-	}
+        System.out.println("--------------------");
+        return new DynamicError("Subtraction operation requires numeric operands.");
+    }
+
+    double result = ((NumVal) firstValue).v();
+
+    // Process the remaining operands
+    for (int i = 1; i < operands.size(); i++) {
+        Value nextValue = operands.get(i).accept(this, env);
+
+        // Ensure the next operand is numeric
+        if (!(nextValue instanceof NumVal)) {
+            System.out.println("--------------------");
+            System.out.println("Error: Subtraction operation requires numeric operands.");
+            System.out.println("Operand is not numeric: " + nextValue.tostring() + " (type: " + nextValue.getClass().getSimpleName() + ")");
+			if (operands.get(i) instanceof VarExp) {
+				System.out.println("Variable: " + ((VarExp) operands.get(i)).name());
+			} else {
+				System.out.println("Expression: " + operands.get(i).accept(this, env).tostring() + " (" + operands.get(i).getClass().getSimpleName() + ')');
+			}
+            System.out.println("--------------------");
+            return new DynamicError("Subtraction operation requires numeric operands.");
+        }
+
+        // Perform the subtraction
+        result -= ((NumVal) nextValue).v();
+    }
+
+    return new NumVal(result);
+}
 
 	@Override
 	public Value visit(VarExp e, Env env) {
