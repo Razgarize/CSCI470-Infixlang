@@ -126,6 +126,24 @@ public class Evaluator implements Visitor<Value> {
 
     // Ensure the left operand is a boolean
     if (!(leftValue instanceof Value.BoolVal)) {
+		System.out.println("--------------------");
+		System.out.println("Error: Left operand of ('&&'/'and') is not a boolean.");
+		System.out.println("Expression: " + e.left().getClass().getSimpleName());
+		if (e.left() instanceof VarExp) {
+			System.out.println("Variable: " + ((VarExp) e.left()).name());
+		} else if (leftValue instanceof StringVal) {
+			System.out.println("String: " + ((StringVal) leftValue).v());
+		} else if (leftValue instanceof BoolVal) {
+			System.out.println("Boolean: " + ((BoolVal) leftValue).v());
+		} else if (leftValue instanceof UnitVal) {
+			System.out.println("Unit: Unit");
+		} else if (leftValue instanceof PairVal) {
+			System.out.println("Pair: " + ((PairVal) leftValue).tostring());
+		} else {
+			System.out.println("Unknown type: " + leftValue.getClass().getSimpleName());
+		}
+		System.out.println("Value: " + leftValue.tostring() + " (type: " + leftValue.getClass().getSimpleName() + ")");
+		System.out.println("Hint: Ensure all operands are booleans.");
         return new Value.DynamicError("Left operand of ('&&'/'and') is not a boolean");
     }
 
@@ -139,6 +157,24 @@ public class Evaluator implements Visitor<Value> {
 
     // Ensure the right operand is a boolean
     if (!(rightValue instanceof Value.BoolVal)) {
+		System.out.println("--------------------");
+		System.out.println("Error: Right operand of ('&&'/'and') is not a boolean.");
+		System.out.println("Expression: " + e.right().getClass().getSimpleName());
+		if (e.right() instanceof VarExp) {
+			System.out.println("Variable: " + ((VarExp) e.right()).name());
+		} else if (rightValue instanceof StringVal) {
+			System.out.println("String: " + ((StringVal) rightValue).v());
+		} else if (rightValue instanceof BoolVal) {
+			System.out.println("Boolean: " + ((BoolVal) rightValue).v());
+		} else if (rightValue instanceof UnitVal) {
+			System.out.println("Unit: Unit");
+		} else if (rightValue instanceof PairVal) {
+			System.out.println("Pair: " + ((PairVal) rightValue).tostring());
+		} else {
+			System.out.println("Unknown type: " + rightValue.getClass().getSimpleName());
+		}
+		System.out.println("Value: " + rightValue.tostring() + " (type: " + rightValue.getClass().getSimpleName() + ")");
+		System.out.println("Hint: Ensure all operands are booleans.");
         return new Value.DynamicError("Right operand of ('&&'/'and') is not a boolean");
     }
 
@@ -153,7 +189,25 @@ public class Evaluator implements Visitor<Value> {
 
     // Ensure the left operand is a boolean
     if (!(leftValue instanceof Value.BoolVal)) {
-        return new Value.DynamicError("Left operand of '||' is not a boolean");
+		System.out.println("--------------------");
+		System.out.println("Error: Left operand of '(or/||)' is not a boolean.");
+		System.out.println("Expression: " + e.left().getClass().getSimpleName());
+		if (e.left() instanceof VarExp) {
+			System.out.println("Variable: " + ((VarExp) e.left()).name());
+		} else if (leftValue instanceof StringVal) {
+			System.out.println("String: " + ((StringVal) leftValue).v());
+		} else if (leftValue instanceof BoolVal) {
+			System.out.println("Boolean: " + ((BoolVal) leftValue).v());
+		} else if (leftValue instanceof UnitVal) {
+			System.out.println("Unit: Unit");
+		} else if (leftValue instanceof PairVal) {
+			System.out.println("Pair: " + ((PairVal) leftValue).tostring());
+		} else {
+			System.out.println("Unknown type: " + leftValue.getClass().getSimpleName());
+		}
+		System.out.println("Value: " + leftValue.tostring() + " (type: " + leftValue.getClass().getSimpleName() + ")");
+		System.out.println("Hint: Ensure all operands are booleans.");
+        return new Value.DynamicError("Left operand of '(or/||)' is not a boolean");
     }
 
     // Short-circuit: if the left operand is true, return true
@@ -166,7 +220,25 @@ public class Evaluator implements Visitor<Value> {
 
     // Ensure the right operand is a boolean
     if (!(rightValue instanceof Value.BoolVal)) {
-        return new Value.DynamicError("Right operand of '||' is not a boolean");
+		System.out.println("--------------------");
+		System.out.println("Error: Right operand of '(or/||)' is not a boolean.");
+		System.out.println("Expression: " + e.right().getClass().getSimpleName());
+		if (e.right() instanceof VarExp) {
+			System.out.println("Variable: " + ((VarExp) e.right()).name());
+		} else if (rightValue instanceof StringVal) {
+			System.out.println("String: " + ((StringVal) rightValue).v());
+		} else if (rightValue instanceof BoolVal) {
+			System.out.println("Boolean: " + ((BoolVal) rightValue).v());
+		} else if (rightValue instanceof UnitVal) {
+			System.out.println("Unit: Unit");
+		} else if (rightValue instanceof PairVal) {
+			System.out.println("Pair: " + ((PairVal) rightValue).tostring());
+		} else {
+			System.out.println("Unknown type: " + rightValue.getClass().getSimpleName());
+		}
+		System.out.println("Value: " + rightValue.tostring() + " (type: " + rightValue.getClass().getSimpleName() + ")");
+		System.out.println("Hint: Ensure all operands are booleans.");
+        return new Value.DynamicError("Right operand of '(or/||)' is not a boolean");
     }
 
     return rightValue;
@@ -833,6 +905,10 @@ public Value visit(Program p, Env env) {
 	    while (true) {
 	        Value conditionValue = e.condition().accept(this, env);
 	        if (!(conditionValue instanceof Value.BoolVal)) {
+				System.out.println("--------------------");
+				System.out.println("Error: Condition must evaluate to a boolean for While Loop.");
+				System.out.println("Expression causing the issue: while(" + e.condition().accept(this, env).tostring() + ") {...} (" + e.condition().getClass().getSimpleName() + ')');
+				System.out.println("--------------------");
 	            return new Value.DynamicError("Condition must evaluate to a boolean for While Loop.");
 	        }
 	        if (!((Value.BoolVal) conditionValue).v()) {

@@ -160,6 +160,7 @@ num_or_str returns [Exp ast] :
     num=numexp { $ast = $num.ast; }
     | str=strexp { $ast = $str.ast; }
     | v=varexp { $ast = new VarExp($v.text); }
+    | bl=boolexp { $ast = $bl.ast; }
     | '(' e=exp ')' { $ast = $e.ast; }
     | a=arithexp { $ast = $a.ast; }
     ;

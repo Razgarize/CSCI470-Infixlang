@@ -1,6 +1,3 @@
-//string inputs must have "some double qutation marks"
-//otherwise, it will break.
-
 roll = true
 input1 = "yes"
 
