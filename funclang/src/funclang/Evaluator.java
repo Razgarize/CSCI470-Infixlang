@@ -555,6 +555,13 @@ public Value visit(Program p, Env env) {
         return new Value.UnitVal(); // Return UnitVal
     }
 
+	// @Override
+	// public Value visit(FuncExp e, Env env) {
+	// 	String name = e.name();
+	// 	List<Exp> = 
+
+	// }
+
 	@Override
 	public Value visit(DefineDecl e, Env env) { // New for definelang.
 		String name = e.name();
@@ -942,6 +949,7 @@ public Value visit(Program p, Env env) {
     }
     return lastValue; // Return the result of the last expression
 }
+
 
 
 

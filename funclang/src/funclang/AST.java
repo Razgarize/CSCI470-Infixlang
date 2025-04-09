@@ -413,6 +413,16 @@ public interface AST {
 		}
 	}
 
+	// public static class FuncExp extends DefineDecl {
+	// 	public Func(String name, Exp value_exp) {
+	// 		super(name, value_exp);
+	// 	}
+		
+	// 	public <T> T accept(Visitor<T> visitor, Env env) {
+	// 		return visitor.visit(this, env);
+	// 	}
+	// }
+
 	/**
 	 * An if expression has the syntax
 	 * 
@@ -853,5 +863,6 @@ public static class OrExp extends Exp {
 		public T visit(AST.OrExp e, Env env); // New for Pyc
 		public T visit(AST.InputExp e, Env env); // New for Pyc
 		public T visit(AST.RandomExp e, Env env); // New for Pyc
+		// public T visit(AST.FuncExp e, Env env); // New for Pyc
 	}	
 }
