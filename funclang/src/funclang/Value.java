@@ -1,8 +1,11 @@
 package funclang;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import funclang.AST.Exp;
+import funclang.Value.PairVal;
+import funclang.Value.UnitVal;
 
 public interface Value {
 	public String tostring();
@@ -19,8 +22,13 @@ public interface Value {
 		public FunVal(Env env, List<Exp> body)
 		{
 			_env = env;
-			_formals = null;
+			_formals = new ArrayList<>();
 			_bodyList = body;
+			if (!body.isEmpty()) {
+				_body = body.get(0); // Set _body to the first expression in the body list
+			} else {
+				_body = null; // Handle empty body case
+			}
 		}
 		public Env env() { return _env; }
 		public List<String> formals() { return _formals; }
