@@ -33,18 +33,14 @@ PyC draws inspiration from the following languages:
 
 -  **C**: PyC adopts C-style curly brace `{}` scoping to define code blocks, eliminating Python's reliance on indentation for structure.
 
--  **JavaScript**: The global scoping of variables and dynamic behavior in PyC are reminiscent of JavaScript's early design principles.
-
 -  **Funclang**: As the foundational codebase, Funclang provided the structural and conceptual groundwork for PyC's development.
 
   
 
-## EBNF Description (May needs updating)
+## EBNF Description (May need updating)
 
-  
 
 ```
-
 program ::= (definedecl | statement)* ;
 
 definedecl ::= Identifier '{' exp '}' ;
@@ -149,15 +145,29 @@ StrLiteral ::= '"' ( ESCQUOTE | ~('\n'|'\r') )*? '"';
 
 ```
 
-  
-
-## Semantics and Syntatic Behavior
+## Semantics and Syntactic Behavior
 
   
 
 PyC's semantic behavior is designed to balance simplicity and flexibility, making it accessible for developers while maintaining expressive power. The language enforces dynamic typing, allowing variables to change types during execution, and all variables are globally scoped to simplify implementation. Control structures such as conditionals and loops follow predictable, Python-like semantics, while functions operate without return values, relying on global state for data sharing. Error handling is minimalistic but effective, providing clear feedback for syntax, type, and runtime errors. These design choices aim to create a straightforward yet functional programming experience.
 
-  
+### Keywords in PyC
+
+PyC uses a set of reserved keywords that have specific meanings and cannot be used as variable names. These keywords define the structure and behavior of the language.
+
+|Keyword | Meaning|
+|--------|--------|
+| `def` | Used to define a void function. Example: `def myFunction { ... }`.|
+| `if` | Starts a conditional statement. Example: `if (x > 5) { ... }`.|
+| `else` | Specifies the alternative block for an `if` statement. Example: `else { ... }`.| 
+| `while` | Starts a loop that executes while a condition is true. Example: `while (x < 10) { ... }`.|
+| `print` | Outputs values to the console. Example: `print("Hello, World!")`.|
+| `true` | Represents the boolean value `true`. Example: `x = true`.|
+| `false` | Represents the boolean value `false`. Example: `x = false`.|
+| `random` | Generates a random number within a range. Example: `x = random(1, 100)`.|
+| `input` | Accepts user input. Example: `name = input("Enter your name: ")`.|
+| `and` | Logical AND operator. Example: `if (x > 5 and y < 10) { ... }`.| 
+| `or` | Logical OR operator. Example: `if (x > 5 or y < 10) { ... }`.|
 
 ### Variable Binding
 
@@ -670,25 +680,6 @@ Hint: Ensure all operands are numbers.
 By keeping error handling straightforward, PyC ensures that developers can focus on writing and debugging their code without dealing with complex exception mechanisms.
 
 
-  ---
+
   
-### Keywords in PyC
-
-PyC uses a set of reserved keywords that have specific meanings and cannot be used as variable names. These keywords define the structure and behavior of the language.
-
- **Keyword Meanings** 
-
-
-
-| `def` | Used to define a void function. Example: `def myFunction { ... }`. 
-| `if` | Starts a conditional statement. Example: `if (x > 5) { ... }`. 
-| `else` | Specifies the alternative block for an `if` statement. Example: `else { ... }`. 
-| `while` | Starts a loop that executes while a condition is true. Example: `while (x < 10) { ... }`. 
-| `print` | Outputs values to the console. Example: `print("Hello, World!")`. 
-| `true` | Represents the boolean value `true`. Example: `x = true`. 
-| `false` | Represents the boolean value `false`. Example: `x = false`. 
-| `random` | Generates a random number within a range. Example: `x = random(1, 100)`. 
-| `input` | Accepts user input. Example: `name = input("Enter your name: ")`. 
-| `and` | Logical AND operator. Example: `if (x > 5 and y < 10) { ... }`. 
-| `or` | Logical OR operator. Example: `if (x > 5 or y < 10) { ... }`. 
 
