@@ -14,6 +14,13 @@ import funclang.AST.*;
  */
 public class Interpreter {
 	public static void main(String[] args) {
+		System.out.println(" ____        __     _____ ");
+		System.out.println("|  _ \\ _   _ \\ \\   / ____|");
+		System.out.println("| |_) | | | | \\ \\ | |     ");
+		System.out.println("|  __/| |_| |  > >| |____ ");
+		System.out.println("|_|    \\__, | /_/  \\_____|");
+		System.out.println("       |___/              ");
+		System.out.println("");
 		System.out.println("Welcome to PyC! Enter some Python code to evaluate it. Use {} for scoping.");
 		System.out.println("Type 'run' <filename>' to run a file. All files are in the build/funclang/examples directory.");
 		Reader reader = new Reader();

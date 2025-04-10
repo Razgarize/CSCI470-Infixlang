@@ -3,7 +3,15 @@
 
 # PyC
 
-  
+```
+ ____        __     _____ 
+|  _ \ _   _ \ \   / ____|
+| |_) | | | | \ \ | |     
+|  __/| |_| |  > >| |____ 
+|_|    \__, | /_/  \_____|
+       |___/              
+```
+
 
 **"PyC: The Simplicity of Python Meets the Structure of C."**
 
@@ -37,7 +45,7 @@ PyC draws inspiration from the following languages:
 
   
 
-## EBNF Description (May need updating)
+## EBNF Description
 
 
 ```
