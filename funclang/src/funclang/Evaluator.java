@@ -518,6 +518,41 @@ public Value visit(Program p, Env env) {
 	}	
 
 
+	// @Override
+	// public Value visit(AST.FuncExp e, Env env) {
+	// 	String define = e.define();
+	// 	String name = e.name();
+	// 	List<Exp> body = e.body();
+
+	// 	if (define == "def")
+	// 	{
+	// 		// Create a new function body and do not evaluate it.
+	// 		// The function body will be evaluated when the function is called.
+	// 		// Create a function value with three components:
+	// 		//  1. formal parameters of the function - e.formals()
+	// 		//  2. actual body of the function - e.body()
+	// 		//  3. mapping from the free variables in the function body to their values.
+	// 		//return new Value.FunVal(env, null, e.body());
+	// 		return new Value.DynamicError("Function not defined: " + name);
+	// 	}
+
+	// 	for(Exp exp : body) {
+	// 		Value value = exp.accept(this, env);
+	// 		if (value instanceof Value.FunVal) {
+	// 			// If the function is defined, return the function value.
+	// 			return (Value.FunVal) value;
+	// 		} else if (value instanceof Value.DynamicError) {
+	// 			// If there is a dynamic error, return it.
+	// 			return (Value.DynamicError) value;
+	// 		} else {
+	// 			// Otherwise, return the value of the expression.
+	// 			return value;
+	// 		}
+			
+	// 		return new Value.DynamicError("Function not defined: " + name);
+	// 	}
+	// }
+
 	
     @Override
     public Value visit(AST.PrintExp e, Env env) {

@@ -413,9 +413,25 @@ public interface AST {
 		}
 	}
 
-	// public static class FuncExp extends DefineDecl {
-	// 	public Func(String name, Exp value_exp) {
-	// 		super(name, value_exp);
+	// public static class FuncExp extends Exp {
+	// 	String _define; // To tell if we are defining a function or not
+	// 	String _name;
+	// 	List<Exp> _body; // List of expressions in the body of the function
+
+	// 	public FuncExp(String define, String name, List<Exp> body) {
+	// 		_define = define;
+	// 		_name = name;
+	// 		_body = body;
+	// 	}
+
+	// 	public String name() {
+	// 		return _name;
+	// 	}
+	// 	public List<Exp> body() {
+	// 		return _body;
+	// 	}
+	// 	public String define() {
+	// 		return _define;
 	// 	}
 		
 	// 	public <T> T accept(Visitor<T> visitor, Env env) {

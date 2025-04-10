@@ -184,14 +184,6 @@ strexp returns [StrExp ast] :
     StrLiteral { $ast = new StrExp($StrLiteral.text); }
     ;
 
-// Function call expressions
-callexp returns [CallExp ast]
-    locals [ArrayList<Exp> arguments = new ArrayList<Exp>();] :
-    f=exp '('
-    (e=exp { $arguments.add($e.ast); })*
-    ')'
-    { $ast = new CallExp($f.ast, $arguments); }
-    ;
 
 // Numeric expressions
 numexp returns [NumExp ast] :
