@@ -10,14 +10,22 @@ public interface Value {
 		private Env _env;
 		private List<String> _formals;
 		private Exp _body;
+		private List<Exp> _bodyList;
 		public FunVal(Env env, List<String> formals, Exp body) {
 			_env = env;
 			_formals = formals;
 			_body = body;
 		}
+		public FunVal(Env env, List<Exp> body)
+		{
+			_env = env;
+			_formals = null;
+			_bodyList = body;
+		}
 		public Env env() { return _env; }
 		public List<String> formals() { return _formals; }
 		public Exp body() { return _body; }
+		public List<Exp> bodyList() { return _bodyList; }
 	    public String tostring() { 
 			String result = "(lambda ( ";
 			for(String formal : _formals) 

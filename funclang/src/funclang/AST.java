@@ -413,31 +413,31 @@ public interface AST {
 		}
 	}
 
-	// public static class FuncExp extends Exp {
-	// 	String _define; // To tell if we are defining a function or not
-	// 	String _name;
-	// 	List<Exp> _body; // List of expressions in the body of the function
+	public static class FuncExp extends Exp {
+		String _define; // To tell if we are defining a function or not
+		String _name;
+		List<Exp> _body; // List of expressions in the body of the function
 
-	// 	public FuncExp(String define, String name, List<Exp> body) {
-	// 		_define = define;
-	// 		_name = name;
-	// 		_body = body;
-	// 	}
+		public FuncExp(String define, String name, List<Exp> body) {
+			_define = define;
+			_name = name;
+			_body = body;
+		}
 
-	// 	public String name() {
-	// 		return _name;
-	// 	}
-	// 	public List<Exp> body() {
-	// 		return _body;
-	// 	}
-	// 	public String define() {
-	// 		return _define;
-	// 	}
+		public String name() {
+			return _name;
+		}
+		public List<Exp> body() {
+			return _body;
+		}
+		public String define() {
+			return _define;
+		}
 		
-	// 	public <T> T accept(Visitor<T> visitor, Env env) {
-	// 		return visitor.visit(this, env);
-	// 	}
-	// }
+		public <T> T accept(Visitor<T> visitor, Env env) {
+			return visitor.visit(this, env);
+		}
+	}
 
 	/**
 	 * An if expression has the syntax
@@ -872,13 +872,12 @@ public static class OrExp extends Exp {
 		public T visit(AST.NullExp e, Env env); // Additional expressions for convenience
 		public T visit(AST.WhileExp e, Env env); // New for Pyc
 		public T visit(AST.PrintExp e, Env env); // New for Pyc
-		// public T visit(AST.UserInputExp e, Env env); // New for Pyc
 		public T visit(AST.IncExp e, Env env); // New for Pyc
 		public T visit(AST.DeIncExp e, Env env); // New for Pyc
 		public T visit(AST.AndExp e, Env env); // New for Pyc
 		public T visit(AST.OrExp e, Env env); // New for Pyc
 		public T visit(AST.InputExp e, Env env); // New for Pyc
 		public T visit(AST.RandomExp e, Env env); // New for Pyc
-		// public T visit(AST.FuncExp e, Env env); // New for Pyc
+		public T visit(AST.FuncExp e, Env env); // New for Pyc
 	}	
 }

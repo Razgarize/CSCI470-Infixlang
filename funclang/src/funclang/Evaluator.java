@@ -518,40 +518,36 @@ public Value visit(Program p, Env env) {
 	}	
 
 
-	// @Override
-	// public Value visit(AST.FuncExp e, Env env) {
-	// 	String define = e.define();
-	// 	String name = e.name();
-	// 	List<Exp> body = e.body();
+	@Override
+	public Value visit(AST.FuncExp e, Env env) {
+    String define = e.define();
+    String name = e.name();
+    List<Exp> body = e.body();
 
-	// 	if (define == "def")
-	// 	{
-	// 		// Create a new function body and do not evaluate it.
-	// 		// The function body will be evaluated when the function is called.
-	// 		// Create a function value with three components:
-	// 		//  1. formal parameters of the function - e.formals()
-	// 		//  2. actual body of the function - e.body()
-	// 		//  3. mapping from the free variables in the function body to their values.
-	// 		//return new Value.FunVal(env, null, e.body());
-	// 		return new Value.DynamicError("Function not defined: " + name);
-	// 	}
+    // Handle function definition
+    if ("def".equals(define)) {
+        System.out.println("Defining function: " + name);
+        Value.FunVal function = new Value.FunVal(env, body); // Create a function value
+        ((GlobalEnv) initEnv).extend(name, function); // Store the function in the global environment
+        return function;
+    }
 
-	// 	for(Exp exp : body) {
-	// 		Value value = exp.accept(this, env);
-	// 		if (value instanceof Value.FunVal) {
-	// 			// If the function is defined, return the function value.
-	// 			return (Value.FunVal) value;
-	// 		} else if (value instanceof Value.DynamicError) {
-	// 			// If there is a dynamic error, return it.
-	// 			return (Value.DynamicError) value;
-	// 		} else {
-	// 			// Otherwise, return the value of the expression.
-	// 			return value;
-	// 		}
-			
-	// 		return new Value.DynamicError("Function not defined: " + name);
-	// 	}
-	// }
+    // Handle function call
+    Value value = env.get(name); // Look up the function in the environment
+    if (!(value instanceof Value.FunVal)) {
+        return new Value.DynamicError("Function not defined: " + name);
+    }
+
+    Value.FunVal function = (Value.FunVal) value;
+    Env functionEnv = function.env(); // Get the function's environment
+    List<Exp> functionBody = function.bodyList();
+
+    Value result = new Value.UnitVal(); // Default return value
+    for (Exp exp : functionBody) {
+        result = exp.accept(this, functionEnv); // Evaluate each expression in the body
+    }
+    return result;
+}
 
 	
     @Override

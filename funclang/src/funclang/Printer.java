@@ -161,9 +161,9 @@ public class Printer {
 			return "";
 		}
 
-		// public String visit(AST.FuncExp e, Env env) {
-		// 	return "";
-		// }
+		public String visit(AST.FuncExp e, Env env) {
+			return "";
+		}
 
 		// public String visit(AST.NotExp e, Env env) {
 		// 	return "";
