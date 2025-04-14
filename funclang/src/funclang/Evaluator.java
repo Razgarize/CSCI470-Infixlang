@@ -1052,6 +1052,23 @@ public Value visit(AST.DeIncExp e, Env env) {
 		return new NumVal(decrementedValue);
 	}
 
+
+// @Override
+// public Value visit(AST.NotExp e, Env env) {
+// 	// Ensure the expression is a variable
+// 	Value value = e.fst().accept(this, env);
+// 	if (!(e.fst() instanceof AST.BoolExp)) {
+// 		System.out.println("--------------------");
+// 		System.out.println("Error: Must be a boolean expression for 'not' operation.");
+// 		System.out.println("Expression causing the issue: " + e.fst().accept(this, env).tostring() + " (" + e.fst().getClass().getSimpleName() + ')');
+// 		System.out.println("Current value: " + (e.fst() != null ? e.fst().accept(this, env).tostring() : "null"));
+// 		System.out.println("--------------------");
+// 		return new Value.DynamicError("Not operation requires a boolean expression.");
+// 	}
+// }
+
+
+
 	// Handle non-numeric values
 	System.out.println("--------------------");
 	System.out.println("Error: Decrement operation '--' is only valid for numbers.");

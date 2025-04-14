@@ -21,12 +21,13 @@ definedecl returns [DefineDecl ast] :
 
 statement returns [Exp ast] :
     e=exp { $ast = $e.ast; }
+    | func=functionexp { $ast = $func.ast; }
     ;
 
 functionexp returns [FuncExp ast]
     locals [ArrayList<Exp> bodies]
     @init { $bodies = new ArrayList<Exp>(); } :
-    def=Define id=Identifier '()' '{' (body=exp { $bodies.add($body.ast); })* '}'
+    def=Define id=Identifier '()' '{' (body=statement { $bodies.add($body.ast); })* '}'
     { $ast = new FuncExp($def.text, $id.text, $bodies); }
     | id=Identifier def='()'
     { $ast = new FuncExp($def.text, $id.text, $bodies); } 
@@ -37,7 +38,6 @@ functionexp returns [FuncExp ast]
 exp returns [Exp ast] :
     va=varexp { $ast = $va.ast; }
     | wl=whileexp { $ast = $wl.ast; }
-    | func=functionexp { $ast = $func.ast; }
     | com=comexp { $ast = $com.ast; }
     | pr=printexp { $ast = $pr.ast; }
     | ife=ifexp { $ast = $ife.ast; }

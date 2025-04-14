@@ -810,6 +810,17 @@ public static class OrExp extends Exp {
 		}
 	}
 
+	// public static class NotExp extends Exp {
+	// 	private Exp _arg; 
+	// 	public NotExp(Exp arg){
+	// 		_arg = arg;
+	// 	}
+	// 	public Exp arg() { return _arg; }
+	// 	public <T> T accept(Visitor<T> visitor, Env env) {
+	// 		return visitor.visit(this, env);
+	// 	}
+	// }
+
 	public static class RandomExp extends Exp {
 		private Exp _min;
 		private Exp _max;
@@ -879,5 +890,6 @@ public static class OrExp extends Exp {
 		public T visit(AST.InputExp e, Env env); // New for Pyc
 		public T visit(AST.RandomExp e, Env env); // New for Pyc
 		public T visit(AST.FuncExp e, Env env); // New for Pyc
+		//public T visit(AST.NotExp e, Env env); // New for Pyc
 	}	
 }

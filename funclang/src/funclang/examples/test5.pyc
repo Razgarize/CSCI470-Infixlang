@@ -1,0 +1,14 @@
+  def func () {
+    yay = "mama mia"
+ }
+ 
+  def func2() {
+    x=2
+    func()
+ }
+
+ yay = 3
+ func()
+ x = yay
+ print (x)
+ 
