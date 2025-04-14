@@ -28,11 +28,18 @@ functionexp returns [FuncExp ast]
     locals [ArrayList<Exp> bodies]
     @init { $bodies = new ArrayList<Exp>(); } :
     def=Define id=Identifier '()' '{' (body=statement { $bodies.add($body.ast); })* '}'
-    { $ast = new FuncExp($def.text, $id.text, $bodies); }
-    | id=Identifier def='()'
-    { $ast = new FuncExp($def.text, $id.text, $bodies); } 
+    { $ast = new FuncExp($def.text, $id.text, $bodies); } // Function definition
+    | id=Identifier '()'
+    { $ast = new FuncExp(null, $id.text, null); } // Function call
     ;
 
+// Function call
+funccall returns [FuncExp ast]
+    locals [ArrayList<Exp> bodies]
+    @init { $bodies = new ArrayList<Exp>(); } :
+    id=Identifier '()'
+    { $ast = new FuncExp(null, $id.text, $bodies); } // Function call
+    ;
 
 // Expressions
 exp returns [Exp ast] :
@@ -44,6 +51,7 @@ exp returns [Exp ast] :
     | bl=boolexp { $ast = $bl.ast; }
     | val=num_or_str { $ast = $val.ast; }
     | comp=compexp { $ast = $comp.ast; }
+    | func=funccall { $ast = $func.ast; }
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
     | log=logexp { $ast = $log.ast; }
     | random=randomexp { $ast = $random.ast; }
@@ -195,7 +203,6 @@ strexp returns [StrExp ast] :
     StrLiteral { $ast = new StrExp($StrLiteral.text); }
     ;
 
-
 // Numeric expressions
 numexp returns [NumExp ast] :
     n0=Number { $ast = new NumExp(Integer.parseInt($n0.text)); }
@@ -213,7 +220,6 @@ inputexp returns [InputExp ast] :
     'input' '('  ( prompt=strexp ) ')' { $ast = new InputExp($prompt.ast); }
     | 'input' '()' { $ast = new InputExp(); }
     ;
-
 
 // Lexical rules
 Define : 'def';
@@ -234,8 +240,6 @@ TrueLiteral : 'true';
 FalseLiteral : 'false';
 While : 'while';
 Print : 'print';
-
-
 
 Number : DIGIT+;
 Identifier : Letter LetterOrDigit*;

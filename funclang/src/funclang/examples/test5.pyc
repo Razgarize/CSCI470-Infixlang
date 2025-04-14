@@ -5,10 +5,16 @@
   def func2() {
     x=2
     func()
+    def func3(){
+        print("Hello World")
+    }
+    
  }
 
  yay = 3
  func()
  x = yay
  print (x)
+ func2()
+ func3()
  

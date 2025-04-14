@@ -1,0 +1,37 @@
+def roll(){
+    die1=(random(1,6))
+    die2=(random(1,6))
+    diesum = die1 + die2
+}
+
+name = input("What is your name?")
+print("Hello", name, "Welcome to craps!")
+game=true
+
+die1=0
+die2=0
+diesum=0
+bet=0
+userinput=0
+
+while(userinput!=7){
+    userinput=0
+    if(diesum!=7){
+        print("1. to roll dice")
+        print("2. to bet")
+        userinput=input("Please choose a number!")
+        if(userinput==1){
+            print("rolling")
+            roll()
+            print(die1, die2, diesum)
+        }
+        if(userinput==2){
+            bet=input("how much do you want to bet?")
+        }
+    }
+    if(diesum==7){
+        print("You Lose!")
+    }
+
+}
+print("Goodbye!")
