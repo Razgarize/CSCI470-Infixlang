@@ -31,6 +31,7 @@ while(userinput!=7){
     }
     if(diesum==7){
         print("You Lose!")
+        userinput=7
     }
 
 }
