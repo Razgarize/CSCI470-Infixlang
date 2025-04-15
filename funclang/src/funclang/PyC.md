@@ -51,9 +51,7 @@ PyC draws inspiration from the following languages:
 ```
 program ::= (definedecl | statement)* ;
 
-definedecl ::= Identifier '{' exp '}' ;
-
-statement ::= exp ;
+statement ::= funcexp | exp ;
 
 exp ::= varexp
 		| boolexp
@@ -70,7 +68,7 @@ exp ::= varexp
 		| randomexp
 		| inputexp ;
 
-func ::= 'def' Identifier '()' '{' exp '}' ;
+func ::= 'def' Identifier '()' '{' (exp)* '}' ;
 		| Identifier '()'
 
 arithexp ::= term
