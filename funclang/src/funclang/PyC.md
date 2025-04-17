@@ -187,6 +187,7 @@ PyC uses a set of reserved keywords that have specific meanings and cannot be us
 | `--` | Deincrementor operator. Example: `a--`.|
 | `=` | Assignment operator. Example: `a=32`.|
 | `==` | Compare If-Equal operator. Example: `43==43`.|
+| `!=` | Compare If-Not-Equal operator. Example: `43!=42`.|
 | `<=` | Compare If-Less-Than-Or-Equal operator. Example: `34<=43`.|
 | `>=` | Compare If-Greater-Than-Or-Equal operator. Example: `58>=43`.|
 | `<` | Compare If-Less-Than operator. Example: `53<100`.|
