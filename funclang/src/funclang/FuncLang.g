@@ -56,6 +56,7 @@ exp returns [Exp ast] :
     | log=logexp { $ast = $log.ast; }
     | random=randomexp { $ast = $random.ast; }
     | input=inputexp { $ast = $input.ast; }
+    | conc=concat { $ast = $conc.ast; }
     | a=arithexp { $ast = $a.ast; }
     ; 
 
@@ -63,6 +64,11 @@ exp returns [Exp ast] :
 //     e=exp
 //     { $ast = new UserInputExp($e.ast); }
 //     ;
+
+concat returns [Concat ast] :
+    e1=strexp '&+' e2=exp { $ast = new Concat($e1.ast, $e2.ast); }
+    | e1=strexp '&+' e2=exp { $ast = new Concat($e1.ast, $e2.ast); }
+    ;
 
 randomexp returns [RandomExp ast] :
      'random' '(' e1=exp ',' e2=exp ')' { $ast = new RandomExp($e1.ast, $e2.ast); }

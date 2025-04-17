@@ -586,12 +586,6 @@ public Value visit(Program p, Env env) {
         return new Value.UnitVal(); // Return UnitVal
     }
 
-	// @Override
-	// public Value visit(FuncExp e, Env env) {
-	// 	String name = e.name();
-	// 	List<Exp> = 
-
-	// }
 
 	@Override
 	public Value visit(DefineDecl e, Env env) { // New for definelang.
@@ -1121,6 +1115,41 @@ public Value visit(AST.RandomExp e, Env env) {
 
     // Return the random integer as a double
     return new NumVal((double) randomInt);
+}
+
+@Override
+public Value visit(AST.Concat e, Env env)
+{
+	// Evaluate the first and second expressions
+	Value firstValue = e.str1().accept(this, env);
+	Value secondValue = e.str2().accept(this, env);
+
+	// Check if both operands are strings
+	if (firstValue instanceof Value.StringVal && secondValue instanceof Value.StringVal) {
+		String concatenatedString = ((Value.StringVal) firstValue).v() + ((Value.StringVal) secondValue).v();
+		return new Value.StringVal(concatenatedString);
+	}
+
+	// Handle type mismatch
+	String firstType = firstValue.getClass().getSimpleName();
+	String secondType = secondValue.getClass().getSimpleName();
+
+	System.out.println("--------------------");
+	System.out.println("Error: Concatenation operation requires string operands.");
+	System.out.println("Expression causing the issue: " + 
+		(e.str1() instanceof VarExp ? ((VarExp) e.str1()).name() : "unknown") + 
+		" &+ " + 
+		(e.str2() instanceof VarExp ? ((VarExp) e.str2()).name() : "unknown"));
+	System.out.println("First operand value: " + firstValue.tostring() + " (type: " + firstType + ")");
+	System.out.println("Second operand value: " + secondValue.tostring() + " (type: " + secondType + ")");
+	System.out.println("--------------------");
+
+	// Return a dynamic error with a detailed message
+	return new Value.DynamicError(
+		"Concatenation operation requires string operands. " +
+		"First operand type: " + firstType + ", " +
+		"Second operand type: " + secondType
+	);
 }
 
 @Override

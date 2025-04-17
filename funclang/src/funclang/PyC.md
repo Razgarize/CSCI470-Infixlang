@@ -66,7 +66,10 @@ exp ::= varexp
 		| ifexp
 		| logexp
 		| randomexp
+		| concat
 		| inputexp ;
+
+concat ::= strexp '&+' exp
 
 func ::= 'def' Identifier '()' '{' (exp)* '}' ;
 		| Identifier '()'
@@ -174,6 +177,20 @@ PyC uses a set of reserved keywords that have specific meanings and cannot be us
 | `input` | Accepts user input. Example: `name = input("Enter your name: ")`.|
 | `and` | Logical AND operator. Example: `if (x > 5 and y < 10) { ... }`.| 
 | `or` | Logical OR operator. Example: `if (x > 5 or y < 10) { ... }`.|
+| `+` | Addition operator. Example: `32 + 8`.|
+| `-` | Subtractoin operator. Example: `32 - 8`.|
+| `%` | Modulus operator. Example: `32 % 3`.|
+| `/` | Division operator. Example: `32 / 3`.|
+| `*` | Multiply operator. Example: `32 * 3`.|
+| `&+` | Concatenation operator. Example: `"Hello " &+ "World!"`.|
+| `++` | Incrementor operator. Example: `a++`.|
+| `--` | Deincrementor operator. Example: `a--`.|
+| `=` | Assignment operator. Example: `a=32`.|
+| `==` | Compare If-Equal operator. Example: `43==43`.|
+| `<=` | Compare If-Less-Than-Or-Equal operator. Example: `34<=43`.|
+| `>=` | Compare If-Greater-Than-Or-Equal operator. Example: `58>=43`.|
+| `<` | Compare If-Less-Than operator. Example: `53<100`.|
+| `>` | Compare If-Greater-Than operator. Example: `53>100`.|
 
 ### Variable Binding
 
