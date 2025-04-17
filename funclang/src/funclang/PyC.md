@@ -175,8 +175,8 @@ PyC uses a set of reserved keywords that have specific meanings and cannot be us
 | `false` | Represents the boolean value `false`. Example: `x = false`.|
 | `random` | Generates a random number within a range. Example: `x = random(1, 100)`.|
 | `input` | Accepts user input. Example: `name = input("Enter your name: ")`.|
-| `and` | Logical AND operator. Example: `if (x > 5 and y < 10) { ... }`.| 
-| `or` | Logical OR operator. Example: `if (x > 5 or y < 10) { ... }`.|
+| `and` or `&&` | Logical AND operator. Example: `if (x > 5 and y < 10) { ... }`.| 
+| `or` or `||` | Logical OR operator. Example: `if (x > 5 or y < 10) { ... }`.|
 | `+` | Addition operator. Example: `32 + 8`.|
 | `-` | Subtractoin operator. Example: `32 - 8`.|
 | `%` | Modulus operator. Example: `32 % 3`.|
