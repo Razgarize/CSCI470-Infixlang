@@ -578,7 +578,7 @@ public Value visit(Program p, Env env) {
 				output.append("Printing error: ");
                 output.append("Unknown value type");
             }
-            output.append(" "); // Add a space between items
+            
         }
 
         System.out.println(output.toString().trim()); // Print the concatenated output

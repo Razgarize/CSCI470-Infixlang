@@ -1,0 +1,41 @@
+x=23
+y=25
+z=26
+a=1
+
+if(x==23){
+    if(y==25){
+        if(z==26){
+            if(a==1){
+                if(x==23){
+                    if(y==25){
+                        if(z==26){
+                            if(a==1){
+                                if(x==23){
+                                    if(y==25){
+                                        if(z==26){
+                                            if(a==1){
+                                                if(x==23){
+                                                    if(y==25){
+                                                        if(z==26){
+                                                            if(a==1){
+                                                                print("x is 23, y is 25, z is 26, a is 1")
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+else{
+    print("x is not 23, y is not 25, z is not 26, a is not 1")
+}
