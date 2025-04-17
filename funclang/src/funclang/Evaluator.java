@@ -526,7 +526,7 @@ public Value visit(Program p, Env env) {
 
     // Handle function definition
     if ("def".equals(define)) {
-        System.out.println("Defining function: " + name);
+        //System.out.println("Defining function: " + name);
         Value.FunVal function = new Value.FunVal(env, body); // Create a function value
         ((GlobalEnv) initEnv).extend(name, function); // Store the function in the global environment
         return function;
