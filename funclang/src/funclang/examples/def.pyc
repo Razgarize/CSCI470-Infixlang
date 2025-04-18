@@ -8,7 +8,7 @@ def a() {
     {
         print("world")
         print("ya")
-        print(l)
+        print(1)
     }
     x++
 }

@@ -69,7 +69,7 @@ exp ::= varexp
 		| concat
 		| inputexp ;
 
-concat ::= strexp '&+' exp
+concat ::= num_or_str '&+' exp
 
 func ::= 'def' Identifier '()' '{' (exp)* '}' ;
 		| Identifier '()'
@@ -98,6 +98,14 @@ compexp ::= num_or_str
 		| compexp '!=' num_or_str
 		| compexp '<=' num_or_str
 		| compexp '>=' num_or_str ;
+
+num_or_str ::= 
+	    num=numexp
+   		| str=strexp
+    	| v=varexp
+    	| bl=boolexp
+    	| '(' e=exp ')'
+    	| a=arithexp
 
 logexp ::= logexp ('&&' | 'and') compexp
 			| logexp ('||' | 'or') compexp
