@@ -849,20 +849,14 @@ public static class OrExp extends Exp {
 	}
 
 	public static class Concat extends Exp {
-		private Exp _str1;
-		private Exp _str2;
+		private List<Exp> _strs;
 
-		public Concat(Exp str1, Exp str2) {
-			_str1 = str1;
-			_str2 = str2;
+		public Concat(List<Exp> strs) {
+			_strs = strs;
 		}
 
-		public Exp str1() {
-			return _str1;
-		}
-
-		public Exp str2() {
-			return _str2;
+		public List<Exp> strs() {
+			return _strs;
 		}
 
 		public <T> T accept(Visitor<T> visitor, Env env) {

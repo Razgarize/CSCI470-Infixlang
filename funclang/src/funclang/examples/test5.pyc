@@ -1,0 +1,7 @@
+x=0
+a="a"
+while(x<10){
+    a=a&+" hello "
+    x++
+}
+print(a)

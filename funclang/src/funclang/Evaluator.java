@@ -1118,38 +1118,37 @@ public Value visit(AST.RandomExp e, Env env) {
 }
 
 @Override
-public Value visit(AST.Concat e, Env env)
-{
-	// Evaluate the first and second expressions
-	Value firstValue = e.str1().accept(this, env);
-	Value secondValue = e.str2().accept(this, env);
+public Value visit(AST.Concat e, Env env) {
+    // Evaluate all string expressions in the list
+    List<Exp> stringExpressions = e.strs();
+    StringBuilder concatenatedString = new StringBuilder();
 
-	// Check if both operands are strings
-	if (firstValue instanceof Value.StringVal && secondValue instanceof Value.StringVal) {
-		String concatenatedString = ((Value.StringVal) firstValue).v() + ((Value.StringVal) secondValue).v();
-		return new Value.StringVal(concatenatedString);
-	}
+    for (Exp exp : stringExpressions) {
+        Value value = exp.accept(this, env);
 
-	// Handle type mismatch
-	String firstType = firstValue.getClass().getSimpleName();
-	String secondType = secondValue.getClass().getSimpleName();
+        // Ensure each operand is a string
+        if (!(value instanceof Value.StringVal)) {
+            String valueType = value.getClass().getSimpleName();
+            System.out.println("--------------------");
+            System.out.println("Error: Concatenation operation requires string operands.");
+            System.out.println("Expression causing the issue: " + 
+                (exp instanceof VarExp ? ((VarExp) exp).name() : "unknown"));
+            System.out.println("Value: " + value.tostring() + " (type: " + valueType + ")");
+            System.out.println("--------------------");
 
-	System.out.println("--------------------");
-	System.out.println("Error: Concatenation operation requires string operands.");
-	System.out.println("Expression causing the issue: " + 
-		(e.str1() instanceof VarExp ? ((VarExp) e.str1()).name() : "unknown") + 
-		" &+ " + 
-		(e.str2() instanceof VarExp ? ((VarExp) e.str2()).name() : "unknown"));
-	System.out.println("First operand value: " + firstValue.tostring() + " (type: " + firstType + ")");
-	System.out.println("Second operand value: " + secondValue.tostring() + " (type: " + secondType + ")");
-	System.out.println("--------------------");
+            // Return a dynamic error with a detailed message
+            return new Value.DynamicError(
+                "Concatenation operation requires string operands. " +
+                "Found operand of type: " + valueType
+            );
+        }
 
-	// Return a dynamic error with a detailed message
-	return new Value.DynamicError(
-		"Concatenation operation requires string operands. " +
-		"First operand type: " + firstType + ", " +
-		"Second operand type: " + secondType
-	);
+        // Append the string value to the result
+        concatenatedString.append(((Value.StringVal) value).v());
+    }
+
+    // Return the concatenated string as a Value.StringVal
+    return new Value.StringVal(concatenatedString.toString());
 }
 
 @Override
