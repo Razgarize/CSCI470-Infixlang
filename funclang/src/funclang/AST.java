@@ -848,21 +848,21 @@ public static class OrExp extends Exp {
 		}
 	}
 
-	public static class Concat extends Exp {
-		private List<Exp> _strs;
+	// public static class Concat extends Exp {
+	// 	private List<Exp> _strs;
 
-		public Concat(List<Exp> strs) {
-			_strs = strs;
-		}
+	// 	public Concat(List<Exp> strs) {
+	// 		_strs = strs;
+	// 	}
 
-		public List<Exp> strs() {
-			return _strs;
-		}
+	// 	public List<Exp> strs() {
+	// 		return _strs;
+	// 	}
 
-		public <T> T accept(Visitor<T> visitor, Env env) {
-			return visitor.visit(this, env);
-		}
-	}
+	// 	public <T> T accept(Visitor<T> visitor, Env env) {
+	// 		return visitor.visit(this, env);
+	// 	}
+	// }
 
 	
 	public interface Visitor <T> {
@@ -905,6 +905,6 @@ public static class OrExp extends Exp {
 		public T visit(AST.InputExp e, Env env); // New for Pyc
 		public T visit(AST.RandomExp e, Env env); // New for Pyc
 		public T visit(AST.FuncExp e, Env env); // New for Pyc
-		public T visit(AST.Concat e, Env env); // New for Pyc
+		//public T visit(AST.Concat e, Env env); // New for Pyc
 	}	
 }

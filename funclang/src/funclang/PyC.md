@@ -27,7 +27,7 @@ PyC is a programming language that combines the simplicity of Python with the st
 
   
 
-PyC was designed to be an easy-to-implement language that merges the syntax of Python and C. It combines Python’s dynamic variable binding with C-style scoping, removing Python’s reliance on whitespace for structure. The goal was to create a language that is simple yet powerful, with a familiar syntax for developers. Based on the Funclang codebase.
+PyC was designed to be an easy-to-implement language that merges the syntax of Python and C. It combines Python’s dynamic variable binding with C-style scoping, removing Python’s reliance on whitespace for structure. The goal was to create a language that is simple yet powerful, with a familiar syntax for developers. Based on the Funclang codebase. It is also strongly typed, so you have to make sure that you add similar data types.
 
 ### Influences
 
@@ -66,10 +66,8 @@ exp ::= varexp
 		| ifexp
 		| logexp
 		| randomexp
-		| concat
 		| inputexp ;
 
-concat ::= num_or_str '&+' exp
 
 func ::= 'def' Identifier '()' '{' (exp)* '}' ;
 		| Identifier '()'
@@ -99,8 +97,7 @@ compexp ::= num_or_str
 		| compexp '<=' num_or_str
 		| compexp '>=' num_or_str ;
 
-num_or_str ::= 
-	    num=numexp
+num_or_str ::= num=numexp
    		| str=strexp
     	| v=varexp
     	| bl=boolexp
@@ -190,7 +187,6 @@ PyC uses a set of reserved keywords that have specific meanings and cannot be us
 | `%` | Modulus operator. Example: `32 % 3`.|
 | `/` | Division operator. Example: `32 / 3`.|
 | `*` | Multiply operator. Example: `32 * 3`.|
-| `&+` | Concatenation operator. Example: `"Hello " &+ "World!"`.|
 | `++` | Incrementor operator. Example: `a++`.|
 | `--` | Deincrementor operator. Example: `a--`.|
 | `=` | Assignment operator. Example: `a=32`.|

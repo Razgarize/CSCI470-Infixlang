@@ -1117,39 +1117,39 @@ public Value visit(AST.RandomExp e, Env env) {
     return new NumVal((double) randomInt);
 }
 
-@Override
-public Value visit(AST.Concat e, Env env) {
-    // Evaluate all string expressions in the list
-    List<Exp> stringExpressions = e.strs();
-    StringBuilder concatenatedString = new StringBuilder();
+// @Override
+// public Value visit(AST.Concat e, Env env) {
+//     // Evaluate all string expressions in the list
+//     List<Exp> stringExpressions = e.strs();
+//     StringBuilder concatenatedString = new StringBuilder();
 
-    for (Exp exp : stringExpressions) {
-        Value value = exp.accept(this, env);
+//     for (Exp exp : stringExpressions) {
+//         Value value = exp.accept(this, env);
 
-        // Ensure each operand is a string
-        if (!(value instanceof Value.StringVal)) {
-            String valueType = value.getClass().getSimpleName();
-            System.out.println("--------------------");
-            System.out.println("Error: Concatenation operation requires string operands.");
-            System.out.println("Expression causing the issue: " + 
-                (exp instanceof VarExp ? ((VarExp) exp).name() : "unknown"));
-            System.out.println("Value: " + value.tostring() + " (type: " + valueType + ")");
-            System.out.println("--------------------");
+//         // Ensure each operand is a string
+//         if (!(value instanceof Value.StringVal)) {
+//             String valueType = value.getClass().getSimpleName();
+//             System.out.println("--------------------");
+//             System.out.println("Error: Concatenation operation requires string operands.");
+//             System.out.println("Expression causing the issue: " + 
+//                 (exp instanceof VarExp ? ((VarExp) exp).name() : "unknown"));
+//             System.out.println("Value: " + value.tostring() + " (type: " + valueType + ")");
+//             System.out.println("--------------------");
 
-            // Return a dynamic error with a detailed message
-            return new Value.DynamicError(
-                "Concatenation operation requires string operands. " +
-                "Found operand of type: " + valueType
-            );
-        }
+//             // Return a dynamic error with a detailed message
+//             return new Value.DynamicError(
+//                 "Concatenation operation requires string operands. " +
+//                 "Found operand of type: " + valueType
+//             );
+//         }
 
-        // Append the string value to the result
-        concatenatedString.append(((Value.StringVal) value).v());
-    }
+//         // Append the string value to the result
+//         concatenatedString.append(((Value.StringVal) value).v());
+//     }
 
-    // Return the concatenated string as a Value.StringVal
-    return new Value.StringVal(concatenatedString.toString());
-}
+//     // Return the concatenated string as a Value.StringVal
+//     return new Value.StringVal(concatenatedString.toString());
+// }
 
 @Override
 public Value visit(AST.InputExp e, Env env) {

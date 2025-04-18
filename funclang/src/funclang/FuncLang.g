@@ -55,18 +55,17 @@ exp returns [Exp ast] :
     | id=Identifier '=' e=exp { $ast = new DefineDecl($id.text, $e.ast); } 
     | log=logexp { $ast = $log.ast; }
     | random=randomexp { $ast = $random.ast; }
-    | conc=concat { $ast = $conc.ast; }
     | input=inputexp { $ast = $input.ast; }
     | a=arithexp { $ast = $a.ast; }
     ; 
 
 
 // Concatenation expression
-concat returns [Exp ast] 
-    locals [ArrayList<Exp> list]
-    @init { $list = new ArrayList<Exp>(); } :
-    base=num_or_str ( '&+' next=num_or_str { $list.add($base.ast); $list.add($next.ast); $ast = new Concat($list); } )*
-    ;
+// concat returns [Exp ast] 
+//     locals [ArrayList<Exp> list]
+//     @init { $list = new ArrayList<Exp>(); } :
+//     base=num_or_str ( '&+' next=num_or_str { $list.add($base.ast); $list.add($next.ast); $ast = new Concat($list); } )*
+//     ;
 
 randomexp returns [RandomExp ast] :
      'random' '(' e1=exp ',' e2=exp ')' { $ast = new RandomExp($e1.ast, $e2.ast); }
