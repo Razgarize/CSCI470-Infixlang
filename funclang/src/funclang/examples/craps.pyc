@@ -5,7 +5,7 @@ def roll(){
 }
 
 name = input("What is your name?")
-print("Hello", name, "Welcome to craps!")
+print("Hello ", name, " Welcome to craps!")
 game=true
 
 die1=0
@@ -19,11 +19,12 @@ while(userinput!=7){
     if(diesum!=7){
         print("1. to roll dice")
         print("2. to bet")
+        print("7. to quit")
         userinput=input("Please choose a number!")
         if(userinput==1){
             print("rolling")
             roll()
-            print(die1, die2, diesum)
+            print(die1,, " ", die2, " ", diesum)
         }
         if(userinput==2){
             bet=input("how much do you want to bet?")

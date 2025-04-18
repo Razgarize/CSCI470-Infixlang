@@ -5,19 +5,19 @@ while(x<10){
 	while(y<5)
 	{
 		if((y%2)==0){
-			print("y is even", "y = ", y)
+			print("y is even ", "y = ", y)
 		}
 		y++
 	}
 	y=0
 	if( x%2==0 ){
-		print("x is even", x)
+		print("x is even ", x)
 	}
 	else{
-		print("x is odd", x)
+		print("x is odd ", x)
 	}
 	if(x%2==0 and x%3==0 and x%1==1){
-		print("x is divisable by 2 and 3 and 1 when x =", x)
+		print("x is divisable by 2 and 3 and 1 when x = ", x)
 	}
 	x++
 }

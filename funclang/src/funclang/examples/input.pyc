@@ -5,9 +5,9 @@ while (x < 3) {
     y = 0
     while (y < 3) {
         if (x == y) {
-            print("x equals y at", x)
+            print("x equals y at ", x)
         } else {
-            print("x:", x, "y:", y)
+            print("x: ", x, "y: ", y)
         }
         y++
     }
